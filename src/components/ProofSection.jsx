@@ -1,53 +1,82 @@
-import { motion } from 'framer-motion'
-import PlaceholderSlot from './PlaceholderSlot'
-import Testimonials from './Testimonials'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Testimonials from "./Testimonials";
 
-const SCREENSHOT_LABELS = [
-  'Profit screenshot 1 — /src/assets/proof/screenshot-1.png',
-  'Profit screenshot 2 — /src/assets/proof/screenshot-2.png',
-  'Profit screenshot 3 — /src/assets/proof/screenshot-3.png',
-  'Profit screenshot 4 — /src/assets/proof/screenshot-4.png',
-]
+import screenshot1 from "../assets/proof/screenshot-1.jpg";
+import screenshot2 from "../assets/proof/screenshot-2.jpg";
+import screenshot3 from "../assets/proof/screenshot-3.jpg";
+import screenshot4 from "../assets/proof/screenshot-4.jpg";
+import screenshot5 from "../assets/proof/screenshot-5.jpg";
+import screenshot6 from "../assets/proof/screenshot-6.jpg";
+
+const SCREENSHOTS = [
+  screenshot1,
+  screenshot2,
+  screenshot3,
+  screenshot4,
+  screenshot5,
+  screenshot6,
+];
+
+// Duplicate the list so the loop can wrap seamlessly at -50%
+const MARQUEE_ITEMS = [...SCREENSHOTS, ...SCREENSHOTS];
 
 export default function ProofSection() {
+  const [isPaused, setIsPaused] = useState(false);
+
   return (
-    <section className="section-pad border-t border-mist/10">
+    <section className="section-pad border-t border-mist/10 overflow-hidden">
       <div className="container-xl">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
           className="mb-14 max-w-2xl"
         >
           <span className="eyebrow">The Proof</span>
           <h2 className="mt-4 text-3xl font-semibold text-mist md:text-4xl">
-            Real accounts, real screenshots
+            Straight from our traders
           </h2>
           <p className="mt-4 text-mist/55">
-            A snapshot of live trading terminals from accounts running 5i Traders algorithms.
-            Drop your own screenshots into <code className="font-mono text-xs text-signal/80">/src/assets/proof/</code> to replace these frames.
+            Real chats, real accounts, real profits. This is what our clients
+            send us — their account balance alongside their own words, unedited.
           </p>
         </motion.div>
+      </div>
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {SCREENSHOT_LABELS.map((label, i) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.45, delay: i * 0.08 }}
+      <div
+        className="relative"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Fade edges so the row doesn't cut off harshly */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-ink-900 to-transparent md:w-40" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-ink-900 to-transparent md:w-40" />
+
+        <motion.div
+          className="flex w-max gap-5 px-4"
+          animate={isPaused ? {} : { x: ["0%", "-50%"] }}
+          transition={{ duration: 32, ease: "linear", repeat: Infinity }}
+        >
+          {MARQUEE_ITEMS.map((src, i) => (
+            <div
+              key={i}
+              className="relative h-[420px] w-[210px] flex-shrink-0 overflow-hidden rounded-2xl border border-mist/10 bg-ink-700/60 shadow-lg shadow-black/30 transition-transform duration-300 hover:scale-[1.03]"
             >
-              <PlaceholderSlot label={`Screenshot ${i + 1}`} aspect="aspect-[9/16]" />
-            </motion.div>
+              <img
+                src={src}
+                alt={`Client chat and profit screenshot ${(i % SCREENSHOTS.length) + 1}`}
+                className="h-full w-full object-cover"
+              />
+            </div>
           ))}
-        </div>
+        </motion.div>
+      </div>
 
-        <div className="mt-24">
-          <Testimonials />
-        </div>
+      <div className="container-xl mt-24">
+        <Testimonials />
       </div>
     </section>
-  )
+  );
 }

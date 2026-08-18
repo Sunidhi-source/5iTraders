@@ -1,9 +1,6 @@
-import { motion } from 'framer-motion'
-import { useSectionNav } from '../lib/scrollTo'
+import { motion } from "framer-motion";
+import { useSectionNav } from "../lib/scrollTo";
 
-// Deterministic pseudo-candles so the hero motif looks like a real
-// price series (higher highs, a pullback, then a breakout) rather than
-// random noise.
 const CANDLES = [
   { o: 40, c: 55, h: 62, l: 36, up: true },
   { o: 55, c: 48, h: 58, l: 44, up: false },
@@ -17,14 +14,14 @@ const CANDLES = [
   { o: 94, c: 118, h: 122, l: 92, up: true },
   { o: 118, c: 112, h: 120, l: 108, up: false },
   { o: 112, c: 134, h: 138, l: 110, up: true },
-]
+];
 
 function CandlestickMotif() {
-  const width = 640
-  const height = 200
-  const gap = width / CANDLES.length
-  const bodyW = gap * 0.42
-  const scale = height / 150
+  const width = 640;
+  const height = 200;
+  const gap = width / CANDLES.length;
+  const bodyW = gap * 0.42;
+  const scale = height / 150;
 
   return (
     <svg
@@ -34,33 +31,52 @@ function CandlestickMotif() {
       aria-hidden="true"
     >
       {CANDLES.map((c, i) => {
-        const x = i * gap + gap / 2
-        const yO = height - c.o * scale
-        const yC = height - c.c * scale
-        const yH = height - c.h * scale
-        const yL = height - c.l * scale
-        const bodyTop = Math.min(yO, yC)
-        const bodyH = Math.max(Math.abs(yC - yO), 2)
-        const color = c.up ? '#2FA8FF' : '#3A4552'
+        const x = i * gap + gap / 2;
+        const yO = height - c.o * scale;
+        const yC = height - c.c * scale;
+        const yH = height - c.h * scale;
+        const yL = height - c.l * scale;
+        const bodyTop = Math.min(yO, yC);
+        const bodyH = Math.max(Math.abs(yC - yO), 2);
+        const color = c.up ? "#2FA8FF" : "#3A4552";
 
         return (
           <motion.g
             key={i}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 + i * 0.07, duration: 0.5, ease: 'easeOut' }}
+            transition={{
+              delay: 0.5 + i * 0.07,
+              duration: 0.5,
+              ease: "easeOut",
+            }}
           >
-            <line x1={x} y1={yH} x2={x} y2={yL} stroke={color} strokeWidth={1.5} opacity={0.7} />
-            <rect x={x - bodyW / 2} y={bodyTop} width={bodyW} height={bodyH} fill={color} rx={1.5} />
+            <line
+              x1={x}
+              y1={yH}
+              x2={x}
+              y2={yL}
+              stroke={color}
+              strokeWidth={1.5}
+              opacity={0.7}
+            />
+            <rect
+              x={x - bodyW / 2}
+              y={bodyTop}
+              width={bodyW}
+              height={bodyH}
+              fill={color}
+              rx={1.5}
+            />
           </motion.g>
-        )
+        );
       })}
     </svg>
-  )
+  );
 }
 
 export default function Hero() {
-  const goToSection = useSectionNav()
+  const goToSection = useSectionNav();
 
   return (
     <section className="relative overflow-hidden pt-40 pb-24 md:pt-48 md:pb-32">
@@ -98,8 +114,9 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.15 }}
               className="mt-6 max-w-md text-base leading-relaxed text-mist/60 md:text-lg"
             >
-              5i Traders builds backtested forex algorithms that execute your strategy with
-              total discipline — no hesitation, no emotion, no missed sessions.
+              5i Traders builds backtested forex algorithms that execute your
+              strategy with total discipline — no hesitation, no emotion, no
+              missed sessions.
             </motion.p>
 
             <motion.div
@@ -108,10 +125,16 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.25 }}
               className="mt-10 flex flex-wrap items-center gap-4"
             >
-              <button onClick={() => goToSection('contact')} className="btn-primary">
+              <button
+                onClick={() => goToSection("contact")}
+                className="btn-primary"
+              >
                 Get Your Free Trial
               </button>
-              <button onClick={() => goToSection('products')} className="btn-secondary">
+              <button
+                onClick={() => goToSection("products")}
+                className="btn-secondary"
+              >
                 See how it works
               </button>
             </motion.div>
@@ -123,12 +146,14 @@ export default function Hero() {
               className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-mist/10 pt-8"
             >
               {[
-                ['24/5', 'Market coverage'],
-                ['0', 'Emotional trades'],
-                ['100%', 'Rule-based execution'],
+                ["24/5", "Market coverage"],
+                ["0", "Emotional trades"],
+                ["100%", "Rule-based execution"],
               ].map(([stat, label]) => (
                 <div key={label}>
-                  <div className="font-mono text-2xl font-medium text-signal">{stat}</div>
+                  <div className="font-mono text-2xl font-medium text-signal">
+                    {stat}
+                  </div>
                   <div className="mt-1 text-xs text-mist/45">{label}</div>
                 </div>
               ))}
@@ -139,7 +164,9 @@ export default function Hero() {
           <div className="relative">
             <div className="card relative overflow-hidden p-6 md:p-8">
               <div className="mb-6 flex items-center justify-between">
-                <span className="font-mono text-xs text-mist/40">EUR/USD · 5i-ALGO-04</span>
+                <span className="font-mono text-xs text-mist/40">
+                  XAU/USD · 5i-ALGO-04
+                </span>
                 <span className="flex items-center gap-1.5 font-mono text-xs text-signal">
                   <span className="h-1.5 w-1.5 rounded-full bg-signal animate-blink" />
                   live
@@ -149,7 +176,9 @@ export default function Hero() {
                 <CandlestickMotif />
               </div>
               <div className="mt-6 flex items-center justify-between border-t border-mist/10 pt-5 font-mono text-xs text-mist/40">
-                <span>+12.4% <span className="text-signal">this session</span></span>
+                <span>
+                  +12.4% <span className="text-signal">this session</span>
+                </span>
                 <span>Drawdown cap: 4.0%</span>
               </div>
             </div>
@@ -157,5 +186,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }

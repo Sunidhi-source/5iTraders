@@ -1,16 +1,22 @@
-import { ImageIcon } from 'lucide-react'
+import { ImageIcon } from "lucide-react";
 
-/**
- * Marked placeholder for an image asset that will be dropped in later.
- * Drop the real file into /src/assets/ and swap the <img> back in —
- * every usage below documents the exact path + aspect ratio expected.
- */
 export default function PlaceholderSlot({
   label,
-  aspect = 'aspect-square',
-  rounded = 'rounded-xl',
-  className = '',
+  aspect = "aspect-square",
+  rounded = "rounded-xl",
+  className = "",
+  src,
 }) {
+  if (src) {
+    return (
+      <div
+        className={`relative flex ${aspect} ${rounded} w-full items-center justify-center overflow-hidden border border-mist/10 bg-ink-700/60 ${className}`}
+      >
+        <img src={src} alt={label} className="h-full w-full object-cover" />
+      </div>
+    );
+  }
+
   return (
     <div
       role="img"
@@ -24,5 +30,5 @@ export default function PlaceholderSlot({
         </span>
       </div>
     </div>
-  )
+  );
 }
