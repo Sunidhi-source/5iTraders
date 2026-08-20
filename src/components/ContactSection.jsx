@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion'
 import LeadForm from './LeadForm'
 
-export default function ContactSection() {
+export default function ContactSection({ bordered = true }) {
   return (
-    <section id="contact" className="section-pad relative border-t border-mist/10">
+    <section
+      id="contact"
+      className={`section-pad relative ${bordered ? 'border-t border-mist/10' : ''}`}
+    >
       <div className="container-xl grid gap-14 lg:grid-cols-[0.8fr_1fr] lg:items-start">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -11,13 +14,18 @@ export default function ContactSection() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.5 }}
         >
-          <span className="eyebrow">Start Your Free Trial</span>
+          <span className="eyebrow">Get in Touch</span>
           <h2 className="mt-4 text-3xl font-semibold text-mist md:text-4xl">
-            See the algorithm trade before you commit.
+            Get in Touch
           </h2>
           <p className="mt-4 max-w-md text-mist/55">
-            Tell us a little about you and we&apos;ll set up a free trial on your preferred
-            plan — no card required to start.
+            Whether you&apos;re trading solo, running a desk, or building a revenue
+            stream around us — tell us what you&apos;re after and we&apos;ll point you
+            to the right service.
+          </p>
+          <p className="mt-3 max-w-md text-mist/55">
+            One form, real people on the other end — usually back to you within
+            1–2 business days.
           </p>
         </motion.div>
 

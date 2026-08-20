@@ -17,6 +17,7 @@ create table if not exists public.leads (
   city text not null,
   note text,
   plan_interest text,
+  service_interest text,
   status text not null default 'new'
     check (status in ('new', 'contacted', 'interested', 'converted', 'not interested')),
   created_at timestamptz not null default now()

@@ -1,65 +1,79 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Globe2 } from 'lucide-react'
-import { useSectionNav } from '../lib/scrollTo'
+import { Link } from 'react-router-dom'
+import { ArrowRight, LineChart, Send, GraduationCap, Megaphone } from 'lucide-react'
+
+const SERVICES = [
+  {
+    title: 'Algo',
+    desc: 'Backtested, risk-managed forex algorithms running live on your account.',
+    icon: LineChart,
+    to: '/algo',
+  },
+  {
+    title: 'Telegram Premium',
+    desc: 'Real-time signals and market calls delivered straight to your phone.',
+    icon: Send,
+    to: '/courses',
+  },
+  {
+    title: 'Course',
+    desc: 'Learn the systems and thinking behind the strategies we trade.',
+    icon: GraduationCap,
+    to: '/courses',
+  },
+  {
+    title: 'Influencer Management',
+    desc: 'Turnkey partnership infrastructure for brokers and prop firms.',
+    icon: Megaphone,
+    to: '/influencer-management',
+  },
+]
 
 export default function AlgoSolutions() {
-  const goToSection = useSectionNav()
-
   return (
     <section id="products" className="section-pad border-t border-mist/10 bg-ink-800/40">
-      <div className="container-xl grid items-center gap-16 lg:grid-cols-2">
+      <div className="container-xl">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.5 }}
+          className="mx-auto max-w-2xl text-center"
         >
           <span className="eyebrow">Our Products</span>
           <h2 className="mt-4 text-3xl font-semibold text-mist md:text-4xl">
-            Algorithmic trading solutions
+            Four ways to work with 5i Traders
           </h2>
-          <p className="mt-5 text-mist/55">
-            5i Traders builds and maintains the systems that power our clients&apos; accounts —
-            from strategy design through live deployment. We help traders of every level
-            compete in a market that moves faster than any single person can watch.
-          </p>
-
-          <div className="mt-8 rounded-xl border border-mist/10 bg-ink-900/60 p-6">
-            <div className="flex items-center gap-2 text-signal">
-              <Globe2 className="h-4 w-4" />
-              <span className="font-mono text-xs uppercase tracking-wide">Forex Algorithm Development</span>
-            </div>
-            <p className="mt-3 text-sm leading-relaxed text-mist/55">
-              Years spent developing high-performance trading algorithms and the platforms that
-              run them — refined alongside clients trading across more than a dozen countries,
-              from first-time traders to full-time desks.
-            </p>
-          </div>
-
-          <button onClick={() => goToSection('reviews')} className="btn-secondary mt-8">
-            Learn more <ArrowRight className="h-4 w-4" />
-          </button>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="grid grid-cols-2 gap-4"
-        >
-          {[
-            ['Strategy Design', 'Rule-based systems built on historical edge, not indicators alone.'],
-            ['Backtesting', 'Multi-year data runs before a single system goes live.'],
-            ['Live Deployment', 'Monitored execution across your broker of choice.'],
-            ['Ongoing Tuning', 'Systems reviewed and adjusted as market regimes shift.'],
-          ].map(([title, desc]) => (
-            <div key={title} className="card p-5">
-              <h4 className="font-display text-sm font-semibold text-mist">{title}</h4>
-              <p className="mt-2 text-xs leading-relaxed text-mist/45">{desc}</p>
-            </div>
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {SERVICES.map((service, i) => (
+            <motion.div
+              key={service.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.45, delay: i * 0.08 }}
+              className="card flex flex-col p-6 transition-colors hover:border-signal/30"
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-signal/10 text-signal">
+                <service.icon className="h-5 w-5" strokeWidth={1.75} />
+              </div>
+              <h3 className="mt-5 font-display text-base font-semibold text-mist">
+                {service.title}
+              </h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-mist/50">
+                {service.desc}
+              </p>
+              <Link
+                to={service.to}
+                className="mt-6 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wide text-signal transition-colors hover:text-signal-600"
+              >
+                Learn more <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

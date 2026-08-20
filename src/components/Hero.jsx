@@ -38,7 +38,7 @@ function CandlestickMotif() {
         const yL = height - c.l * scale;
         const bodyTop = Math.min(yO, yC);
         const bodyH = Math.max(Math.abs(yC - yO), 2);
-        const color = c.up ? "#2FA8FF" : "#3A4552";
+        const color = c.up ? "#2563EB" : "#93B4E8";
 
         return (
           <motion.g
@@ -80,11 +80,7 @@ export default function Hero() {
 
   return (
     <section className="relative overflow-hidden pt-40 pb-24 md:pt-48 md:pb-32">
-      {/* ambient grid + gradient */}
-      <div className="pointer-events-none absolute inset-0 bg-grid bg-grid" />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-signal/10 blur-[140px]" />
-
-      <div className="container-xl relative px-6 md:px-10 lg:px-16">
+      <div className="container-xl relative z-10 px-6 md:px-10 lg:px-16">
         <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <motion.span
@@ -93,19 +89,17 @@ export default function Hero() {
               transition={{ duration: 0.5 }}
               className="eyebrow mb-6 inline-flex items-center gap-2"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-signal animate-blink" />
-              Algorithmic Execution, Live 24/5
+              <span className="h-1.5 w-1.5 rounded-full bg-leaf animate-blink" />
+              Individuals · Businesses · Partners
             </motion.span>
 
             <motion.h1
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.05 }}
-              className="max-w-xl text-4xl font-semibold leading-[1.08] tracking-tight text-mist md:text-5xl lg:text-[3.4rem]"
+              className="max-w-xl text-4xl font-semibold leading-[1.08] tracking-tight text-mist md:text-5xl lg:text-[3.2rem]"
             >
-              Trade the plan.
-              <br />
-              Not the panic.
+              Built for traders. Scaled for business. Optimized for partners.
             </motion.h1>
 
             <motion.p
@@ -114,9 +108,9 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.15 }}
               className="mt-6 max-w-md text-base leading-relaxed text-mist/60 md:text-lg"
             >
-              5i Traders builds backtested forex algorithms that execute your
-              strategy with total discipline — no hesitation, no emotion, no
-              missed sessions.
+              5i Traders has built a complete market ecosystem that gives
+              professional edge to individuals, scalable infrastructure to
+              businesses, and turnkey revenue to resellers.
             </motion.p>
 
             <motion.div
@@ -129,14 +123,17 @@ export default function Hero() {
                 onClick={() => goToSection("contact")}
                 className="btn-primary"
               >
-                Get Your Free Trial
+                Contact Us
               </button>
-              <button
-                onClick={() => goToSection("products")}
+              {/* TODO: swap href for the client's YouTube walkthrough link */}
+              <a
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noreferrer"
                 className="btn-secondary"
               >
                 See how it works
-              </button>
+              </a>
             </motion.div>
 
             <motion.div
@@ -146,8 +143,7 @@ export default function Hero() {
               className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-mist/10 pt-8"
             >
               {[
-                ["24/5", "Market coverage"],
-                ["0", "Emotional trades"],
+                ["24/7", "Market coverage"],
                 ["100%", "Rule-based execution"],
               ].map(([stat, label]) => (
                 <div key={label}>
@@ -167,8 +163,8 @@ export default function Hero() {
                 <span className="font-mono text-xs text-mist/40">
                   XAU/USD · 5i-ALGO-04
                 </span>
-                <span className="flex items-center gap-1.5 font-mono text-xs text-signal">
-                  <span className="h-1.5 w-1.5 rounded-full bg-signal animate-blink" />
+                <span className="flex items-center gap-1.5 font-mono text-xs text-leaf">
+                  <span className="h-1.5 w-1.5 rounded-full bg-leaf animate-blink" />
                   live
                 </span>
               </div>

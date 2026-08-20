@@ -5,9 +5,7 @@ import ContactSection from '../components/ContactSection'
 import Advantages from '../components/Advantages'
 import AlgoSolutions from '../components/AlgoSolutions'
 import ProofSection from '../components/ProofSection'
-import Pricing from '../components/Pricing'
 import Experts from '../components/Experts'
-import FinalCTA from '../components/FinalCTA'
 import { scrollToId } from '../lib/scrollTo'
 
 export default function Home() {
@@ -32,9 +30,7 @@ export default function Home() {
       <Advantages />
       <AlgoSolutions />
       <ProofSection />
-      <Pricing />
       <Experts />
-      <FinalCTA />
     </>
   )
 }

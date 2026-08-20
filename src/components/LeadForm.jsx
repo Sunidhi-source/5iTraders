@@ -4,12 +4,21 @@ import { CheckCircle2, Loader2 } from 'lucide-react'
 import PhoneInput from './PhoneInput'
 import { supabase } from '../lib/supabaseClient'
 
+const SERVICE_OPTIONS = [
+  'Algo',
+  'Telegram Premium',
+  'Course',
+  'Influencer Management',
+  'Others',
+]
+
 const initialState = {
   name: '',
   email: '',
   countryCode: '+1',
   phone: '',
   city: '',
+  service: '',
   note: '',
 }
 
@@ -72,6 +81,7 @@ export default function LeadForm() {
       city: values.city.trim(),
       note: values.note.trim() || null,
       plan_interest: planInterest,
+      service_interest: values.service || null,
     })
 
     if (error) {
@@ -93,8 +103,8 @@ export default function LeadForm() {
         animate={{ opacity: 1, y: 0 }}
         className="card flex flex-col items-center gap-4 px-8 py-16 text-center"
       >
-        <CheckCircle2 className="h-10 w-10 text-signal" />
-        <h3 className="font-display text-xl font-semibold text-mist">Thanks — you&apos;re in.</h3>
+        <CheckCircle2 className="h-10 w-10 text-leaf" />
+        <h3 className="font-display text-xl font-semibold text-mist">Thanks — we&apos;ve got it.</h3>
         <p className="max-w-sm text-sm text-mist/60">
           Our team will get back to you soon. We usually respond within 1–2 business days.
         </p>
@@ -174,6 +184,25 @@ export default function LeadForm() {
         </div>
 
         <div className="md:col-span-2">
+          <label htmlFor="service" className="mb-1.5 block text-xs font-medium text-mist/50">
+            Which service are you interested in?
+          </label>
+          <select
+            id="service"
+            value={values.service}
+            onChange={(e) => update('service', e.target.value)}
+            className="input-field"
+          >
+            <option value="">Select a service</option>
+            {SERVICE_OPTIONS.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="md:col-span-2">
           <label htmlFor="note" className="mb-1.5 block text-xs font-medium text-mist/50">
             Additional Note <span className="text-mist/30">(optional)</span>
           </label>
@@ -201,7 +230,7 @@ export default function LeadForm() {
               <Loader2 className="h-4 w-4 animate-spin" /> Submitting...
             </>
           ) : (
-            'Get Your Free Trial'
+            'Get in Touch'
           )}
         </button>
         <p className="text-xs text-mist/40">We usually respond within 1–2 business days.</p>

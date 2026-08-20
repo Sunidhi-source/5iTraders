@@ -16,11 +16,11 @@
   }
 
   ::selection {
-    @apply bg-signal/30 text-mist;
+    @apply bg-signal/20 text-mist;
   }
 
   *:focus-visible {
-    outline: 2px solid #2FA8FF;
+    outline: 2px solid #2563EB;
     outline-offset: 3px;
   }
 }
@@ -39,19 +39,23 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md bg-signal px-6 py-3.5 font-display font-semibold text-ink-900 transition-all duration-200 hover:bg-signal/90 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(47,168,255,0.55)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-signal px-6 py-3.5 font-display font-semibold text-white transition-all duration-200 hover:bg-signal-600 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(37,99,235,0.55)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md border border-mist/20 bg-transparent px-6 py-3.5 font-display font-semibold text-mist transition-all duration-200 hover:border-signal/50 hover:text-signal;
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-mist/20 bg-white px-6 py-3.5 font-display font-semibold text-mist transition-all duration-200 hover:border-signal/50 hover:text-signal;
+  }
+
+  .btn-leaf {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-leaf px-6 py-3.5 font-display font-semibold text-white transition-all duration-200 hover:bg-leaf-600 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(22,163,74,0.5)] active:translate-y-0;
   }
 
   .card {
-    @apply rounded-xl border border-mist/10 bg-ink-800/60 backdrop-blur-sm;
+    @apply rounded-xl border border-mist/10 bg-white shadow-[0_1px_2px_rgba(11,37,71,0.04)] backdrop-blur-sm;
   }
 
   .input-field {
-    @apply w-full rounded-md border border-mist/15 bg-ink-900/80 px-4 py-3 text-sm text-mist placeholder:text-mist/30 outline-none transition-colors focus:border-signal/60;
+    @apply w-full rounded-md border border-mist/15 bg-ink-800/50 px-4 py-3 text-sm text-mist placeholder:text-mist/30 outline-none transition-colors focus:border-signal/60 focus:bg-white;
   }
 }
 

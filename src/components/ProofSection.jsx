@@ -46,16 +46,18 @@ export default function ProofSection() {
       </div>
 
       <div
-        className="relative"
+        className="container-xl relative overflow-hidden px-6 md:px-10 lg:px-16"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {/* Fade edges so the row doesn't cut off harshly */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-ink-900 to-transparent md:w-40" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-ink-900 to-transparent md:w-40" />
+        {/* Fade edges so the row doesn't cut off harshly — and the row now
+            stays within the same container width as every other section,
+            instead of bleeding to the browser edge. */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white to-transparent md:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white to-transparent md:w-28" />
 
         <motion.div
-          className="flex w-max gap-5 px-4"
+          className="flex w-max gap-5"
           animate={isPaused ? {} : { x: ["0%", "-50%"] }}
           transition={{ duration: 32, ease: "linear", repeat: Infinity }}
         >
