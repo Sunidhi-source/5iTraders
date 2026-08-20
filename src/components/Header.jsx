@@ -1,7 +1,25 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Menu, X, Phone, Linkedin, Instagram } from 'lucide-react'
+import { Menu, X, Phone, Linkedin, Instagram, Sun, Moon } from 'lucide-react'
 import logo from '../assets/logo/logo.png'
+import { useTheme } from '../context/ThemeContext'
+
+function ThemeToggle({ className = '' }) {
+  const { theme, toggleTheme } = useTheme()
+  const isDark = theme === 'dark'
+
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className={`theme-toggle ${className}`}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+    >
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </button>
+  )
+}
 
 const NAV_LINKS = [
   { label: 'Home', to: '/' },
@@ -45,8 +63,8 @@ export default function Header() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'border-b border-mist/10 bg-white/90 backdrop-blur-md'
-          : 'border-b border-transparent bg-white/60 backdrop-blur-sm'
+          ? 'border-b border-mist/10 bg-ink-900/90 backdrop-blur-md'
+          : 'border-b border-transparent bg-ink-900/60 backdrop-blur-sm'
       }`}
     >
       <div className="container-xl flex items-center justify-between gap-4 px-6 py-4 md:px-10 lg:px-16">
@@ -88,6 +106,9 @@ export default function Header() {
             +1 (000) 000-0000
           </a>
 
+          {/* Light/dark mode toggle */}
+          <ThemeToggle />
+
           {/* Persistent Contact Us — always visible at every breakpoint,
               never collapsed into the mobile menu. */}
           <Link to="/contact" className="btn-primary !px-4 !py-2.5 text-sm md:!px-6 md:!py-3">
@@ -108,7 +129,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-mist/10 bg-white px-6 pb-8 pt-4 lg:hidden">
+        <div className="border-t border-mist/10 bg-ink-900 px-6 pb-8 pt-4 lg:hidden">
           <nav className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <NavLink
@@ -128,9 +149,12 @@ export default function Header() {
               <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram className="h-4 w-4" /></a>
               <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X (Twitter)"><XIcon className="h-4 w-4" /></a>
             </div>
-            <a href="tel:+10000000000" className="flex items-center gap-1.5 font-mono text-xs text-mist/60">
-              <Phone className="h-3.5 w-3.5" /> Call us
-            </a>
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              <a href="tel:+10000000000" className="flex items-center gap-1.5 font-mono text-xs text-mist/60">
+                <Phone className="h-3.5 w-3.5" /> Call us
+              </a>
+            </div>
           </div>
         </div>
       )}

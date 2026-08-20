@@ -1,30 +1,33 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {
-        // "ink" now carries the light end of the palette — white base with
-        // soft blue tints for section depth — while keeping the same token
-        // names every component already references.
+        // "ink" carries the surface scale — white/near-white in light mode,
+        // deep navy in dark mode — driven by CSS variables set in index.css
+        // so every component that already uses these tokens gets dark mode
+        // for free.
         ink: {
-          DEFAULT: '#FFFFFF',
-          900: '#FFFFFF',
-          800: '#EEF4FC',
-          700: '#E3EDFB',
-          600: '#D6E6F8',
-          500: '#C7DBF2',
+          DEFAULT: 'rgb(var(--color-ink-900) / <alpha-value>)',
+          900: 'rgb(var(--color-ink-900) / <alpha-value>)',
+          800: 'rgb(var(--color-ink-800) / <alpha-value>)',
+          700: 'rgb(var(--color-ink-700) / <alpha-value>)',
+          600: 'rgb(var(--color-ink-600) / <alpha-value>)',
+          500: 'rgb(var(--color-ink-500) / <alpha-value>)',
         },
         mist: {
-          DEFAULT: '#0B2547',
-          400: '#3E5C82',
-          300: '#5C7BA3',
+          DEFAULT: 'rgb(var(--color-mist) / <alpha-value>)',
+          400: 'rgb(var(--color-mist-400) / <alpha-value>)',
+          300: 'rgb(var(--color-mist-300) / <alpha-value>)',
         },
+        // "signal" is the brand blue, matched to the logo's electric-blue mark.
         signal: {
-          DEFAULT: '#2563EB',
-          400: '#60A5FA',
-          600: '#1D4ED8',
-          900: '#0B2547',
+          DEFAULT: 'rgb(var(--color-signal) / <alpha-value>)',
+          400: 'rgb(var(--color-signal-400) / <alpha-value>)',
+          600: 'rgb(var(--color-signal-600) / <alpha-value>)',
+          900: 'rgb(var(--color-signal-900) / <alpha-value>)',
         },
         leaf: {
           DEFAULT: '#16A34A',
@@ -43,7 +46,7 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       backgroundImage: {
-        grid: 'linear-gradient(to right, rgba(37,99,235,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(37,99,235,0.08) 1px, transparent 1px)',
+        grid: 'linear-gradient(to right, rgba(36,144,243,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(36,144,243,0.08) 1px, transparent 1px)',
       },
       backgroundSize: {
         grid: '40px 40px',

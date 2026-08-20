@@ -3,12 +3,57 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Surface scale — light mode (white base with soft blue tints) */
+    --color-ink-900: 255 255 255;
+    --color-ink-800: 238 244 252;
+    --color-ink-700: 227 237 251;
+    --color-ink-600: 214 230 248;
+    --color-ink-500: 199 219 242;
+
+    /* Text scale — light mode */
+    --color-mist: 11 37 71;
+    --color-mist-400: 62 92 130;
+    --color-mist-300: 92 123 163;
+
+    /* Brand blue — matched to the logo's electric-blue mark */
+    --color-signal: 36 144 243;
+    --color-signal-400: 92 184 255;
+    --color-signal-600: 11 114 217;
+    --color-signal-900: 10 60 110;
+  }
+
+  .dark {
+    /* Surface scale — dark mode (deep navy, echoing the logo background) */
+    --color-ink-900: 6 11 20;
+    --color-ink-800: 13 21 38;
+    --color-ink-700: 19 30 54;
+    --color-ink-600: 25 38 70;
+    --color-ink-500: 34 50 86;
+
+    /* Text scale — dark mode */
+    --color-mist: 231 238 249;
+    --color-mist-400: 147 166 199;
+    --color-mist-300: 108 130 170;
+
+    /* Brand blue stays vivid, brightened slightly for dark surfaces */
+    --color-signal: 56 158 248;
+    --color-signal-400: 118 195 255;
+    --color-signal-600: 92 184 255;
+    --color-signal-900: 190 224 255;
+  }
+
   html {
     scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
-    @apply bg-ink-900 text-mist font-body;
+    @apply bg-ink-900 text-mist font-body transition-colors duration-300;
   }
 
   h1, h2, h3, h4 {
@@ -20,7 +65,7 @@
   }
 
   *:focus-visible {
-    outline: 2px solid #2563EB;
+    outline: 2px solid rgb(var(--color-signal));
     outline-offset: 3px;
   }
 }
@@ -39,11 +84,11 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md bg-signal px-6 py-3.5 font-display font-semibold text-white transition-all duration-200 hover:bg-signal-600 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(37,99,235,0.55)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-signal px-6 py-3.5 font-display font-semibold text-white transition-all duration-200 hover:bg-signal-600 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(36,144,243,0.55)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md border border-mist/20 bg-white px-6 py-3.5 font-display font-semibold text-mist transition-all duration-200 hover:border-signal/50 hover:text-signal;
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-mist/20 bg-ink-900 px-6 py-3.5 font-display font-semibold text-mist transition-all duration-200 hover:border-signal/50 hover:text-signal;
   }
 
   .btn-leaf {
@@ -51,11 +96,16 @@
   }
 
   .card {
-    @apply rounded-xl border border-mist/10 bg-white shadow-[0_1px_2px_rgba(11,37,71,0.04)] backdrop-blur-sm;
+    @apply rounded-xl border border-mist/10 bg-ink-900 shadow-[0_1px_2px_rgba(11,37,71,0.04)] backdrop-blur-sm;
   }
 
   .input-field {
-    @apply w-full rounded-md border border-mist/15 bg-ink-800/50 px-4 py-3 text-sm text-mist placeholder:text-mist/30 outline-none transition-colors focus:border-signal/60 focus:bg-white;
+    @apply w-full rounded-md border border-mist/15 bg-ink-800/50 px-4 py-3 text-sm text-mist placeholder:text-mist/30 outline-none transition-colors focus:border-signal/60 focus:bg-ink-900;
+  }
+
+  /* Light/dark mode toggle switch used in the header */
+  .theme-toggle {
+    @apply relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-mist/15 bg-ink-800/60 text-mist/70 transition-all duration-200 hover:border-signal/40 hover:text-signal;
   }
 }
 

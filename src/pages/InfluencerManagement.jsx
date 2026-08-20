@@ -82,8 +82,8 @@ export default function InfluencerManagement() {
               transition={{ duration: 0.45, delay: i * 0.08 }}
               className={`relative flex flex-col rounded-xl border p-7 ${
                 plan.popular
-                  ? 'border-signal/50 bg-white shadow-[0_0_0_1px_rgba(37,99,235,0.15),0_20px_60px_-20px_rgba(37,99,235,0.35)]'
-                  : 'border-mist/10 bg-white'
+                  ? 'border-signal/50 bg-ink-900 shadow-[0_0_0_1px_rgba(36,144,243,0.15),0_20px_60px_-20px_rgba(36,144,243,0.35)]'
+                  : 'border-mist/10 bg-ink-900'
               }`}
             >
               {plan.popular && (

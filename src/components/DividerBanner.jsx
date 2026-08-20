@@ -11,7 +11,7 @@ export default function DividerBanner() {
         <polyline
           points="0,55 80,50 160,58 240,35 320,45 400,20 480,30 560,15 640,25 720,10 800,22 880,12 960,28 1040,18 1120,26 1200,14"
           fill="none"
-          stroke="#2563EB"
+          stroke="rgb(var(--color-signal))"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

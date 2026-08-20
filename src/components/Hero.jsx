@@ -38,7 +38,7 @@ function CandlestickMotif() {
         const yL = height - c.l * scale;
         const bodyTop = Math.min(yO, yC);
         const bodyH = Math.max(Math.abs(yC - yO), 2);
-        const color = c.up ? "#2563EB" : "#93B4E8";
+        const color = c.up ? "rgb(var(--color-signal))" : "rgb(var(--color-signal-400))";
 
         return (
           <motion.g
