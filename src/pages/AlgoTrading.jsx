@@ -1,10 +1,21 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { KeyRound, DollarSign, Sparkles, ExternalLink } from "lucide-react";
+import {
+  KeyRound,
+  DollarSign,
+  Sparkles,
+  ExternalLink,
+  HelpCircle,
+  Youtube,
+} from "lucide-react";
 import { useSectionNav } from "../lib/scrollTo";
 import ProofSection from "../components/ProofSection";
 import CopyButton from "../components/CopyButton";
 import AlgoBot from "../components/AlgoBot";
+
+// TODO: client to swap in the real YouTube walkthrough links.
+const LOGIN_HELP_VIDEO_URL = "https://www.youtube.com/";
+const ACCOUNT_HELP_VIDEO_URL = "https://www.youtube.com/";
 
 const BOXES = [
   {
@@ -58,17 +69,18 @@ const MT5_ACCOUNTS = [
   },
 ];
 
-// TODO: client to provide broker name + real "Open your account" links.
 const BROKERS = [
   {
-    name: "Broker Partner 1",
-    desc: "Our primary recommended broker for algo execution.",
-    href: "#",
+    name: "XM",
+    desc: "Our primary recommended broker 1 for algo execution.",
+    href: "https://affs.click/dfHCf",
+    code: "FYRYM",
   },
   {
-    name: "Broker Partner 2",
-    desc: "An alternative broker option for regional availability.",
-    href: "#",
+    name: "Vantage",
+    desc: "Our primary recommended broker 2 for algo execution.",
+    href: "https://vigco.co/la-com-inv/Vantage9",
+    code: "Vantage9",
   },
 ];
 
@@ -155,7 +167,8 @@ export default function AlgoTrading() {
               the client provides live account details.
             </p>
             <p className="mt-2 text-sm font-medium text-signal">
-              Proof is the best marketing — log in and verify our results yourself.
+              Proof is the best marketing — log in and verify our results
+              yourself.
             </p>
           </div>
 
@@ -181,6 +194,28 @@ export default function AlgoTrading() {
               </div>
             ))}
           </div>
+
+          <a
+            href={LOGIN_HELP_VIDEO_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="card mt-5 flex items-center gap-4 p-5 transition hover:border-signal/40"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-signal/10 text-signal">
+              <HelpCircle className="h-5 w-5" strokeWidth={1.75} />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-mist">
+                Don&apos;t know how to login?
+              </p>
+              <p className="mt-0.5 text-xs text-mist/50">
+                Watch our step-by-step video walkthrough.
+              </p>
+            </div>
+            <span className="flex items-center gap-1.5 text-xs font-medium text-signal">
+              <Youtube className="h-4 w-4" /> Watch on YouTube
+            </span>
+          </a>
         </div>
       </section>
 
@@ -203,6 +238,10 @@ export default function AlgoTrading() {
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-mist/50">
                   {broker.desc}
                 </p>
+                <p className="mt-3 font-mono text-xs text-mist/40">
+                  Partner code:{" "}
+                  <span className="text-mist/70">{broker.code}</span>
+                </p>
                 <a
                   href={broker.href}
                   target="_blank"
@@ -214,6 +253,28 @@ export default function AlgoTrading() {
               </div>
             ))}
           </div>
+
+          <a
+            href={ACCOUNT_HELP_VIDEO_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="card mt-5 flex items-center gap-4 p-5 transition hover:border-signal/40"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-signal/10 text-signal">
+              <HelpCircle className="h-5 w-5" strokeWidth={1.75} />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-mist">
+                Facing issue in opening account?
+              </p>
+              <p className="mt-0.5 text-xs text-mist/50">
+                Watch our step-by-step video walkthrough.
+              </p>
+            </div>
+            <span className="flex items-center gap-1.5 text-xs font-medium text-signal">
+              <Youtube className="h-4 w-4" /> Watch on YouTube
+            </span>
+          </a>
         </div>
       </section>
 
