@@ -1,49 +1,79 @@
-import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { KeyRound, DollarSign, Sparkles, ExternalLink } from 'lucide-react'
-import { useSectionNav } from '../lib/scrollTo'
-import ProofSection from '../components/ProofSection'
-import CopyButton from '../components/CopyButton'
-import AlgoBot from '../components/AlgoBot'
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { KeyRound, DollarSign, Sparkles, ExternalLink } from "lucide-react";
+import { useSectionNav } from "../lib/scrollTo";
+import ProofSection from "../components/ProofSection";
+import CopyButton from "../components/CopyButton";
+import AlgoBot from "../components/AlgoBot";
 
 const BOXES = [
   {
     icon: KeyRound,
-    title: 'Get Investor ID & Password',
-    desc: 'Jump straight to your MT5 credentials — issued once you\u2019re set up on the algorithm.',
-    action: { type: 'anchor', target: 'mt5-credentials', label: 'View credentials' },
+    title: "Get Investor ID & Password",
+    desc: "Jump straight to your MT5 credentials — issued once you\u2019re set up on the algorithm.",
+    action: {
+      type: "anchor",
+      target: "mt5-credentials",
+      label: "View credentials",
+    },
   },
   {
     icon: DollarSign,
-    title: 'Pricing',
-    desc: 'Every plan runs the same algorithm — pick the term that fits.',
-    action: { type: 'link', to: '/pricing', label: 'See pricing' },
+    title: "Pricing",
+    desc: "Every plan runs the same algorithm — pick the term that fits.",
+    action: { type: "link", to: "/pricing", label: "See pricing" },
   },
   {
     icon: Sparkles,
-    title: 'Get Free Trial',
-    desc: 'Talk to the team and we\u2019ll get you set up on a trial run.',
-    action: { type: 'link', to: '/contact', label: 'Contact us' },
+    title: "Get Free Trial",
+    desc: "Talk to the team and we\u2019ll get you set up on a trial run.",
+    action: { type: "link", to: "/contact", label: "Contact us" },
   },
-]
+];
 
-// TODO: client to confirm whether these are real, rotating investor
-// credentials or should stay as placeholders long-term.
 const MT5_ACCOUNTS = [
-  { label: 'MT5 Account 1', id: '—', password: '—', server: '—' },
-  { label: 'MT5 Account 2', id: '—', password: '—', server: '—' },
-  { label: 'MT5 Account 3', id: '—', password: '—', server: '—' },
-  { label: 'MT5 Account 4', id: '—', password: '—', server: '—' },
-]
+  {
+    label: "MT5 Account 1",
+    id: "34117652",
+    password: "Mayank@123",
+    server: "vantageMarket-Live 11",
+  },
+  {
+    label: "MT5 Account 2",
+    id: "86304373",
+    password: "5i@MAAKMX1M",
+    server: "XMGlobal-MT5 4",
+  },
+  {
+    label: "MT5 Account 3",
+    id: "34117650",
+    password: "Mayank@123",
+    server: "vantageMarket-Live 11",
+  },
+  {
+    label: "MT5 Account 4",
+    id: "33869475",
+    password: "Mayank@123",
+    server: "vantageMarket-Live 11",
+  },
+];
 
 // TODO: client to provide broker name + real "Open your account" links.
 const BROKERS = [
-  { name: 'Broker Partner 1', desc: 'Our primary recommended broker for algo execution.', href: '#' },
-  { name: 'Broker Partner 2', desc: 'An alternative broker option for regional availability.', href: '#' },
-]
+  {
+    name: "Broker Partner 1",
+    desc: "Our primary recommended broker for algo execution.",
+    href: "#",
+  },
+  {
+    name: "Broker Partner 2",
+    desc: "An alternative broker option for regional availability.",
+    href: "#",
+  },
+];
 
 export default function AlgoTrading() {
-  const goToSection = useSectionNav()
+  const goToSection = useSectionNav();
 
   return (
     <>
@@ -63,8 +93,8 @@ export default function AlgoTrading() {
               Our Algo
             </h1>
             <p className="mt-5 max-w-xl text-mist/60">
-              Backtested, risk-managed forex algorithms running live on your
-              MT5 account — no hesitation, no emotion, no missed sessions.
+              Backtested, risk-managed forex algorithms running live on your MT5
+              account — no hesitation, no emotion, no missed sessions.
             </p>
           </motion.div>
 
@@ -74,7 +104,7 @@ export default function AlgoTrading() {
                 key={box.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
+                viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.45, delay: i * 0.08 }}
                 className="card flex flex-col p-6"
               >
@@ -87,7 +117,7 @@ export default function AlgoTrading() {
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-mist/50">
                   {box.desc}
                 </p>
-                {box.action.type === 'anchor' ? (
+                {box.action.type === "anchor" ? (
                   <button
                     onClick={() => goToSection(box.action.target)}
                     className="btn-secondary mt-6"
@@ -95,7 +125,10 @@ export default function AlgoTrading() {
                     {box.action.label}
                   </button>
                 ) : (
-                  <Link to={box.action.to} className="btn-secondary mt-6 text-center">
+                  <Link
+                    to={box.action.to}
+                    className="btn-secondary mt-6 text-center"
+                  >
                     {box.action.label}
                   </Link>
                 )}
@@ -106,7 +139,10 @@ export default function AlgoTrading() {
       </section>
 
       {/* MT5 investor credentials */}
-      <section id="mt5-credentials" className="section-pad scroll-mt-24 border-b border-mist/10">
+      <section
+        id="mt5-credentials"
+        className="section-pad scroll-mt-24 border-b border-mist/10"
+      >
         <div className="container-xl">
           <div className="max-w-2xl">
             <span className="eyebrow">Get Investor ID &amp; Password</span>
@@ -115,15 +151,17 @@ export default function AlgoTrading() {
             </h2>
             <p className="mt-4 text-mist/55">
               Use these read-only investor logins to follow the algorithm live
-              in your own MT5 terminal. Credentials below are placeholders
-              until the client provides live account details.
+              in your own MT5 terminal. Credentials below are placeholders until
+              the client provides live account details.
             </p>
           </div>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
             {MT5_ACCOUNTS.map((acc) => (
               <div key={acc.label} className="card p-6">
-                <h4 className="font-display text-sm font-semibold text-mist">{acc.label}</h4>
+                <h4 className="font-display text-sm font-semibold text-mist">
+                  {acc.label}
+                </h4>
                 <dl className="mt-4 grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-2 font-mono text-xs text-mist/60">
                   <dt className="text-mist/35">Investor ID</dt>
                   <dd className="truncate">{acc.id}</dd>
@@ -156,8 +194,12 @@ export default function AlgoTrading() {
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
             {BROKERS.map((broker) => (
               <div key={broker.name} className="card flex flex-col p-6">
-                <h4 className="font-display text-base font-semibold text-mist">{broker.name}</h4>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-mist/50">{broker.desc}</p>
+                <h4 className="font-display text-base font-semibold text-mist">
+                  {broker.name}
+                </h4>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-mist/50">
+                  {broker.desc}
+                </p>
                 <a
                   href={broker.href}
                   target="_blank"
@@ -175,5 +217,5 @@ export default function AlgoTrading() {
       {/* Results / Reviews — reuse the same proof section as Home */}
       <ProofSection />
     </>
-  )
+  );
 }

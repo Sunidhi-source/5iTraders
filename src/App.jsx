@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
+import SiteBackground from './components/SiteBackground'
 import Home from './pages/Home'
 import AlgoTrading from './pages/AlgoTrading'
 import CoursesTelegram from './pages/CoursesTelegram'
@@ -15,6 +16,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 function SiteLayout({ children }) {
   return (
     <>
+      <SiteBackground />
       <Header />
       <main>{children}</main>
       <Footer />

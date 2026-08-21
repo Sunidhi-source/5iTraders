@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check, GraduationCap, Radio } from 'lucide-react'
 import { COURSES, ALGO_ADDON } from '../data/courses'
-import { useSectionNav } from '../lib/scrollTo'
-import { PREFILL_EVENT } from '../components/LeadForm'
+import { useGoToContact } from '../lib/scrollTo'
 
 const ICONS = {
   recorded: GraduationCap,
@@ -12,23 +11,18 @@ const ICONS = {
 
 function CourseCard({ course, index }) {
   const [withAlgo, setWithAlgo] = useState(false)
-  const goToSection = useSectionNav()
+  const goToContact = useGoToContact()
   const Icon = ICONS[course.id] ?? GraduationCap
 
   const total = withAlgo ? course.priceWithAlgo : course.price
 
   function enroll() {
-    window.dispatchEvent(
-      new CustomEvent(PREFILL_EVENT, {
-        detail: {
-          planName: `${course.name}${withAlgo ? ' + Algo Add-on' : ''}`,
-          service: 'Course',
-          courseId: course.id,
-          algoAddon: withAlgo,
-        },
-      })
-    )
-    goToSection('contact')
+    goToContact({
+      planName: `${course.name}${withAlgo ? ' + Algo Add-on' : ''}`,
+      service: 'Course',
+      courseId: course.id,
+      algoAddon: withAlgo,
+    })
   }
 
   return (

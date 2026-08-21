@@ -1,6 +1,3 @@
-// A small, friendly bot mascot for the Algo Trading hero — built as plain
-// SVG (no image asset) so it inherits the theme's CSS variables and stays
-// crisp at any size. Purely decorative.
 export default function AlgoBot({ className = "" }) {
   return (
     <div className={`animate-float ${className}`} aria-hidden="true">
@@ -19,7 +16,15 @@ export default function AlgoBot({ className = "" }) {
         />
 
         {/* Antenna */}
-        <line x1="100" y1="30" x2="100" y2="52" stroke="rgb(var(--color-signal))" strokeWidth="3" strokeLinecap="round" />
+        <line
+          x1="100"
+          y1="30"
+          x2="100"
+          y2="52"
+          stroke="rgb(var(--color-signal))"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
         <circle
           cx="100"
           cy="24"
@@ -42,20 +47,52 @@ export default function AlgoBot({ className = "" }) {
         />
 
         {/* Visor */}
-        <rect x="62" y="72" width="76" height="38" rx="14" fill="rgb(var(--color-signal))" opacity="0.14" />
+        <rect
+          x="62"
+          y="72"
+          width="76"
+          height="38"
+          rx="14"
+          fill="rgb(var(--color-signal))"
+          opacity="0.14"
+        />
 
         {/* Eyes (blink together) */}
-        <g className="origin-center animate-bot-blink" style={{ transformBox: "fill-box" }}>
+        <g
+          className="origin-center animate-bot-blink"
+          style={{ transformBox: "fill-box" }}
+        >
           <circle cx="82" cy="91" r="8" fill="rgb(var(--color-signal))" />
           <circle cx="118" cy="91" r="8" fill="rgb(var(--color-signal))" />
         </g>
 
         {/* Ears / side nodes */}
-        <circle cx="42" cy="90" r="7" fill="rgb(var(--color-ink-800))" stroke="rgb(var(--color-signal))" strokeWidth="2" />
-        <circle cx="158" cy="90" r="7" fill="rgb(var(--color-ink-800))" stroke="rgb(var(--color-signal))" strokeWidth="2" />
+        <circle
+          cx="42"
+          cy="90"
+          r="7"
+          fill="rgb(var(--color-ink-800))"
+          stroke="rgb(var(--color-signal))"
+          strokeWidth="2"
+        />
+        <circle
+          cx="158"
+          cy="90"
+          r="7"
+          fill="rgb(var(--color-ink-800))"
+          stroke="rgb(var(--color-signal))"
+          strokeWidth="2"
+        />
 
         {/* Neck */}
-        <rect x="90" y="132" width="20" height="12" fill="rgb(var(--color-signal))" opacity="0.5" />
+        <rect
+          x="90"
+          y="132"
+          width="20"
+          height="12"
+          fill="rgb(var(--color-signal))"
+          opacity="0.5"
+        />
 
         {/* Body */}
         <rect

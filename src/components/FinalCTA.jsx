@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
-import { useSectionNav } from '../lib/scrollTo'
+import { useGoToContact } from '../lib/scrollTo'
 
 export default function FinalCTA() {
-  const goToSection = useSectionNav()
+  const goToContact = useGoToContact()
 
   return (
     <section className="section-pad relative overflow-hidden border-t border-mist/10">
@@ -21,7 +21,7 @@ export default function FinalCTA() {
             Start a free trial today — no pressure, no commitment, just the system running on
             your terms.
           </p>
-          <button onClick={() => goToSection('contact')} className="btn-primary mt-8">
+          <button onClick={() => goToContact()} className="btn-primary mt-8">
             Get Your Free Trial
           </button>
         </motion.div>

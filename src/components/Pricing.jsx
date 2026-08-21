@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 import { plans } from '../data/pricing'
-import { useSectionNav } from '../lib/scrollTo'
-import { PREFILL_EVENT } from './LeadForm'
+import { useGoToContact } from '../lib/scrollTo'
 
 const PERKS = [
   'Full algorithm access',
@@ -12,11 +11,10 @@ const PERKS = [
 ]
 
 export default function Pricing() {
-  const goToSection = useSectionNav()
+  const goToContact = useGoToContact()
 
   function choosePlan(plan) {
-    window.dispatchEvent(new CustomEvent(PREFILL_EVENT, { detail: { planName: plan.name } }))
-    goToSection('contact')
+    goToContact({ planName: plan.name })
   }
 
   return (
