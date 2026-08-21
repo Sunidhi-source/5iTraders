@@ -7,17 +7,6 @@ import { PREFILL_EVENT } from '../components/LeadForm'
 // as a placeholder for now.
 const PLANS = [
   {
-    name: 'Hybrid',
-    tagline: 'Shared revenue, shared upside',
-    perks: [
-      'Co-branded funnel & landing pages',
-      'Revenue share on referred accounts',
-      'Dedicated onboarding for your audience',
-      'Monthly performance reporting',
-    ],
-    popular: false,
-  },
-  {
     name: 'Customised',
     tagline: 'Built around your audience',
     perks: [
@@ -72,7 +61,7 @@ export default function InfluencerManagement() {
           </p>
         </motion.div>
 
-        <div className="mt-16 grid gap-5 lg:grid-cols-3">
+        <div className="mx-auto mt-16 grid max-w-3xl gap-5 sm:grid-cols-2">
           {PLANS.map((plan, i) => (
             <motion.div
               key={plan.name}

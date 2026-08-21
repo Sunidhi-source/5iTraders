@@ -107,6 +107,27 @@
   .theme-toggle {
     @apply relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-mist/15 bg-ink-800/60 text-mist/70 transition-all duration-200 hover:border-signal/40 hover:text-signal;
   }
+
+  /* Animated neon-grid backdrop used behind the Hero section.
+     Colors are pulled from the theme's CSS variables so it re-tints
+     automatically for light and dark mode — no separate variants needed. */
+  .hero-grid-tile {
+    border-radius: 1.5rem;
+    background: rgb(var(--color-ink-800) / 0.55);
+    background-image: radial-gradient(rgb(var(--color-signal) / 0.12) 1.5px, transparent 1.5px);
+    background-size: 14px 14px;
+    border: 1px solid rgb(var(--color-signal) / 0.18);
+    box-shadow:
+      0 0 12px rgb(var(--color-signal) / 0.12),
+      inset 0 0 24px rgb(var(--color-signal) / 0.14);
+    backdrop-filter: blur(3px);
+  }
+
+  .hero-grid-fade {
+    background:
+      linear-gradient(to bottom, rgb(var(--color-ink-900)) 0%, rgb(var(--color-ink-900) / 0.2) 30%, rgb(var(--color-ink-900) / 0.2) 70%, rgb(var(--color-ink-900)) 100%),
+      linear-gradient(to right, rgb(var(--color-ink-900)) 0%, rgb(var(--color-ink-900) / 0.15) 25%, rgb(var(--color-ink-900) / 0.15) 75%, rgb(var(--color-ink-900)) 100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

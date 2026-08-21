@@ -76,6 +76,50 @@ export default {
           '0%': { backgroundPosition: '0px 0px' },
           '100%': { backgroundPosition: '40px 40px' },
         },
+        panGrid: {
+          '0%': { transform: 'rotate(-12deg) translateY(0)' },
+          '100%': { transform: 'rotate(-12deg) translateY(-18%)' },
+        },
+        tilePulse: {
+          '0%, 100%': {
+            boxShadow:
+              '0 0 12px rgb(var(--color-signal) / 0.12), inset 0 0 24px rgb(var(--color-signal) / 0.14)',
+          },
+          '50%': {
+            boxShadow:
+              '0 0 20px rgb(var(--color-signal) / 0.28), inset 0 0 36px rgb(var(--color-signal) / 0.3)',
+          },
+        },
+        flowLine: {
+          '0%': { strokeDashoffset: '480' },
+          '100%': { strokeDashoffset: '0' },
+        },
+        nodeTwinkle: {
+          '0%, 100%': { opacity: 0.35 },
+          '50%': { opacity: 1 },
+        },
+        floatY: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-12px)' },
+        },
+        botBlink: {
+          '0%, 90%, 100%': { transform: 'scaleY(1)' },
+          '95%': { transform: 'scaleY(0.1)' },
+        },
+        antennaBlip: {
+          '0%, 100%': { opacity: 0.4, transform: 'scale(1)' },
+          '50%': { opacity: 1, transform: 'scale(1.4)' },
+        },
+        riseFade: {
+          '0%': { transform: 'translateY(18px) scale(0.9)', opacity: 0 },
+          '15%': { opacity: 1 },
+          '85%': { opacity: 1 },
+          '100%': { transform: 'translateY(-30px) scale(1.02)', opacity: 0 },
+        },
+        dotBounce: {
+          '0%, 80%, 100%': { transform: 'translateY(0)', opacity: 0.4 },
+          '40%': { transform: 'translateY(-5px)', opacity: 1 },
+        },
       },
       animation: {
         marquee: 'marquee 38s linear infinite',
@@ -83,6 +127,17 @@ export default {
         blink: 'blink 1.6s ease-in-out infinite',
         glowPulse: 'glowPulse 5s ease-in-out infinite',
         gridDrift: 'gridDrift 12s linear infinite',
+        panGrid: 'panGrid 70s linear infinite',
+        'tile-pulse-slow': 'tilePulse 6s ease-in-out infinite alternate',
+        'tile-pulse-fast': 'tilePulse 4s ease-in-out infinite alternate-reverse',
+        'flow-line': 'flowLine 5s linear infinite',
+        'flow-line-slow': 'flowLine 8s linear infinite reverse',
+        'node-twinkle': 'nodeTwinkle 2.8s ease-in-out infinite',
+        float: 'floatY 4.5s ease-in-out infinite',
+        'bot-blink': 'botBlink 4.2s ease-in-out infinite',
+        'antenna-blip': 'antennaBlip 1.8s ease-in-out infinite',
+        rise: 'riseFade linear infinite',
+        'dot-bounce': 'dotBounce 1.4s ease-in-out infinite',
       },
     },
   },

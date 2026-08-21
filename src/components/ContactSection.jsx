@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import LeadForm from './LeadForm'
 
-export default function ContactSection({ bordered = true }) {
+export default function ContactSection({ bordered = true, compactTop = false }) {
   return (
     <section
       id="contact"
-      className={`section-pad relative ${bordered ? 'border-t border-mist/10' : ''}`}
+      className={`section-pad relative ${bordered ? 'border-t border-mist/10' : ''} ${compactTop ? 'pt-10 md:pt-14' : ''}`}
     >
       <div className="container-xl grid gap-14 lg:grid-cols-[0.8fr_1fr] lg:items-start">
         <motion.div

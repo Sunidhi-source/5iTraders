@@ -5,7 +5,7 @@ import DividerBanner from "../components/DividerBanner";
 export default function ContactPage() {
   return (
     <div>
-      <section className="relative overflow-hidden pt-40 pb-16 md:pt-48 md:pb-20">
+      <section className="relative overflow-hidden pt-40 pb-8 md:pt-48 md:pb-10">
         <div className="container-xl relative z-10 px-6 text-center md:px-10 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -20,7 +20,7 @@ export default function ContactPage() {
         </div>
       </section>
       <DividerBanner />
-      <ContactSection bordered={false} />
+      <ContactSection bordered={false} compactTop />
     </div>
   );
 }

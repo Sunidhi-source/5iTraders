@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ScrollToTop from './components/ScrollToTop'
 import Home from './pages/Home'
 import AlgoTrading from './pages/AlgoTrading'
 import CoursesTelegram from './pages/CoursesTelegram'
@@ -23,25 +24,28 @@ function SiteLayout({ children }) {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<SiteLayout><Home /></SiteLayout>} />
-      <Route path="/algo" element={<SiteLayout><AlgoTrading /></SiteLayout>} />
-      <Route path="/courses" element={<SiteLayout><CoursesTelegram /></SiteLayout>} />
-      <Route
-        path="/influencer-management"
-        element={<SiteLayout><InfluencerManagement /></SiteLayout>}
-      />
-      <Route path="/pricing" element={<SiteLayout><PricingPage /></SiteLayout>} />
-      <Route path="/contact" element={<SiteLayout><ContactPage /></SiteLayout>} />
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route
-        path="/admin/dashboard"
-        element={
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<SiteLayout><Home /></SiteLayout>} />
+        <Route path="/algo" element={<SiteLayout><AlgoTrading /></SiteLayout>} />
+        <Route path="/courses" element={<SiteLayout><CoursesTelegram /></SiteLayout>} />
+        <Route
+          path="/influencer-management"
+          element={<SiteLayout><InfluencerManagement /></SiteLayout>}
+        />
+        <Route path="/pricing" element={<SiteLayout><PricingPage /></SiteLayout>} />
+        <Route path="/contact" element={<SiteLayout><ContactPage /></SiteLayout>} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </>
   )
 }

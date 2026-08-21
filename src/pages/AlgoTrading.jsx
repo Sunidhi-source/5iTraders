@@ -4,6 +4,7 @@ import { KeyRound, DollarSign, Sparkles, ExternalLink } from 'lucide-react'
 import { useSectionNav } from '../lib/scrollTo'
 import ProofSection from '../components/ProofSection'
 import CopyButton from '../components/CopyButton'
+import AlgoBot from '../components/AlgoBot'
 
 const BOXES = [
   {
@@ -50,6 +51,7 @@ export default function AlgoTrading() {
         <div className="pointer-events-none absolute inset-0 bg-grid bg-grid opacity-60" />
         <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-signal/10 blur-[140px]" />
         <div className="container-xl relative px-6 md:px-10 lg:px-16">
+          <AlgoBot className="pointer-events-none absolute right-6 top-8 hidden h-40 w-40 md:right-10 lg:block lg:h-48 lg:w-48 xl:right-16 xl:h-56 xl:w-56" />
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
