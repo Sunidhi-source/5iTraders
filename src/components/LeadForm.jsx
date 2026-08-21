@@ -342,6 +342,18 @@ export default function LeadForm() {
                 confirm a time and send the meeting link to your email.
               </span>
             </label>
+
+            {values.wantsGoogleMeet && (
+              <a
+                href="https://calendar.app.google/LB9jgaZPmMdu9gpp6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-signal underline decoration-signal/40 underline-offset-2 hover:decoration-signal"
+              >
+                <Video className="h-3.5 w-3.5 shrink-0" />
+                Pick a time on our calendar
+              </a>
+            )}
           </div>
         )}
 

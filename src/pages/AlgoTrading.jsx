@@ -154,6 +154,9 @@ export default function AlgoTrading() {
               in your own MT5 terminal. Credentials below are placeholders until
               the client provides live account details.
             </p>
+            <p className="mt-2 text-sm font-medium text-signal">
+              Proof is the best marketing — log in and verify our results yourself.
+            </p>
           </div>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
