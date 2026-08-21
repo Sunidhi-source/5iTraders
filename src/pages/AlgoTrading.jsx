@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { KeyRound, DollarSign, Sparkles, ExternalLink } from 'lucide-react'
 import { useSectionNav } from '../lib/scrollTo'
 import ProofSection from '../components/ProofSection'
+import CopyButton from '../components/CopyButton'
 
 const BOXES = [
   {
@@ -121,13 +122,18 @@ export default function AlgoTrading() {
             {MT5_ACCOUNTS.map((acc) => (
               <div key={acc.label} className="card p-6">
                 <h4 className="font-display text-sm font-semibold text-mist">{acc.label}</h4>
-                <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 font-mono text-xs text-mist/60">
+                <dl className="mt-4 grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-2 font-mono text-xs text-mist/60">
                   <dt className="text-mist/35">Investor ID</dt>
-                  <dd>{acc.id}</dd>
+                  <dd className="truncate">{acc.id}</dd>
+                  <CopyButton value={acc.id} label="Copy investor ID" />
+
                   <dt className="text-mist/35">Password</dt>
-                  <dd>{acc.password}</dd>
+                  <dd className="truncate">{acc.password}</dd>
+                  <CopyButton value={acc.password} label="Copy password" />
+
                   <dt className="text-mist/35">Server</dt>
-                  <dd>{acc.server}</dd>
+                  <dd className="truncate">{acc.server}</dd>
+                  <CopyButton value={acc.server} label="Copy server" />
                 </dl>
               </div>
             ))}

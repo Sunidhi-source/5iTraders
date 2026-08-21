@@ -9,8 +9,12 @@ import {
   Send,
   Trash2,
   X,
+  Video,
+  Save,
+  ExternalLink,
 } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
+import CopyButton from '../components/CopyButton'
 
 const STATUS_OPTIONS = ['New', 'Contacted', 'Interested', 'Converted', 'Not Interested']
 
@@ -41,6 +45,8 @@ export default function AdminDashboard() {
   const [sortDir, setSortDir] = useState('desc')
   const [pendingDelete, setPendingDelete] = useState(null) // lead object awaiting confirmation
   const [deleting, setDeleting] = useState(false)
+  const [meetLinkDraft, setMeetLinkDraft] = useState('')
+  const [savingMeetLink, setSavingMeetLink] = useState(false)
 
   useEffect(() => {
     fetchLeads()
@@ -71,7 +77,21 @@ export default function AdminDashboard() {
     const next = expandedId === lead.id ? null : lead.id
     setExpandedId(next)
     setNoteDraft('')
+    setMeetLinkDraft(next ? lead.google_meet_link ?? '' : '')
     if (next && !notesByLead[lead.id]) fetchNotes(lead.id)
+  }
+
+  async function handleSaveMeetLink(leadId) {
+    setSavingMeetLink(true)
+    const value = meetLinkDraft.trim() || null
+    const { error } = await supabase
+      .from('leads')
+      .update({ google_meet_link: value })
+      .eq('id', leadId)
+    setSavingMeetLink(false)
+    if (!error) {
+      setLeads((prev) => prev.map((l) => (l.id === leadId ? { ...l, google_meet_link: value } : l)))
+    }
   }
 
   async function handleAddNote(leadId) {
@@ -242,6 +262,65 @@ export default function AdminDashboard() {
                           </span>
                         )}
                       </p>
+                    )}
+
+                    {/* Course selection details — only present for Course leads */}
+                    {lead.course_type && (
+                      <div className="mb-4 flex flex-wrap items-center gap-2 rounded-md border border-mist/10 bg-ink-800/60 p-3 font-mono text-[10px] text-mist/50">
+                        <span className="uppercase text-mist/30">Course:</span>
+                        <span className="rounded bg-signal/10 px-1.5 py-0.5 text-signal">{lead.course_type}</span>
+                        {lead.algo_addon && (
+                          <span className="rounded bg-leaf/10 px-1.5 py-0.5 text-leaf">+ Algo Add-on</span>
+                        )}
+                        {lead.course_amount != null && (
+                          <span className="rounded bg-mist/10 px-1.5 py-0.5 text-mist/60">
+                            ₹{Number(lead.course_amount).toLocaleString('en-IN')}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Google Meet scheduling — only for Influencer Management leads
+                        that asked for a meet. Admin pastes the link in manually
+                        once it's scheduled on their own calendar. */}
+                    {lead.service_interest === 'Influencer Management' && lead.wants_google_meet && (
+                      <div className="mb-4 rounded-md border border-mist/10 bg-ink-800/60 p-3">
+                        <div className="mb-2 flex items-center gap-1.5 font-mono text-[10px] uppercase text-mist/30">
+                          <Video className="h-3 w-3" /> Google Meet
+                        </div>
+                        <div className="flex gap-2">
+                          <input
+                            type="url"
+                            value={meetLinkDraft}
+                            onChange={(e) => setMeetLinkDraft(e.target.value)}
+                            placeholder="https://meet.google.com/xxx-xxxx-xxx"
+                            className="input-field text-xs"
+                          />
+                          <button
+                            onClick={() => handleSaveMeetLink(lead.id)}
+                            disabled={savingMeetLink}
+                            className="btn-secondary px-3"
+                            aria-label="Save Google Meet link"
+                          >
+                            {savingMeetLink ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Save className="h-4 w-4" />
+                            )}
+                          </button>
+                          {lead.google_meet_link && <CopyButton value={lead.google_meet_link} label="Copy link" />}
+                        </div>
+                        {lead.google_meet_link && (
+                          <a
+                            href={lead.google_meet_link}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-2 inline-flex items-center gap-1 font-mono text-[11px] text-signal hover:underline"
+                          >
+                            Open meet link <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
+                      </div>
                     )}
 
                     <div className="flex flex-col gap-2">

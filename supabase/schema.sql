@@ -27,6 +27,16 @@ create index if not exists leads_created_at_idx on public.leads (created_at desc
 create index if not exists leads_status_idx on public.leads (status);
 
 -- ---------------------------------------------------------
+-- leads: additional columns for Course + Influencer Management flows
+-- (safe to re-run — each statement is a no-op if the column already exists)
+-- ---------------------------------------------------------
+alter table public.leads add column if not exists course_type text;
+alter table public.leads add column if not exists algo_addon boolean not null default false;
+alter table public.leads add column if not exists course_amount numeric;
+alter table public.leads add column if not exists wants_google_meet boolean not null default false;
+alter table public.leads add column if not exists google_meet_link text;
+
+-- ---------------------------------------------------------
 -- lead_notes: admin follow-up notes, one-to-many per lead
 -- ---------------------------------------------------------
 create table if not exists public.lead_notes (

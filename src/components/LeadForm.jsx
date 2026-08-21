@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { CheckCircle2, Loader2 } from 'lucide-react'
+import { CheckCircle2, Loader2, Video } from 'lucide-react'
 import PhoneInput from './PhoneInput'
 import { supabase } from '../lib/supabaseClient'
+import { COURSES, ALGO_ADDON } from '../data/courses'
 
 const SERVICE_OPTIONS = [
   'Algo',
@@ -20,6 +21,9 @@ const initialState = {
   city: '',
   service: '',
   note: '',
+  courseId: '',
+  algoAddon: false,
+  wantsGoogleMeet: true,
 }
 
 // Dispatched by the pricing cards so "Choose Plan" can prefill this form
@@ -40,6 +44,9 @@ export default function LeadForm() {
       setValues((v) => ({
         ...v,
         note: v.note?.trim() ? v.note : `Interested in the ${planName} plan.`,
+        service: e.detail?.service ?? v.service,
+        courseId: e.detail?.courseId ?? v.courseId,
+        algoAddon: e.detail?.algoAddon ?? v.algoAddon,
       }))
     }
     window.addEventListener(PREFILL_EVENT, handlePrefill)
@@ -65,14 +72,27 @@ export default function LeadForm() {
       next.phone = 'Enter a valid phone number.'
     }
     if (!values.city.trim()) next.city = 'Enter your city.'
+    if (values.service === 'Course' && !values.courseId) {
+      next.courseId = 'Choose a course.'
+    }
     setErrors(next)
     return Object.keys(next).length === 0
   }
+
+  const selectedCourse = COURSES.find((c) => c.id === values.courseId) ?? null
+  const courseAmount = selectedCourse
+    ? values.algoAddon
+      ? selectedCourse.priceWithAlgo
+      : selectedCourse.price
+    : null
 
   async function handleSubmit(e) {
     e.preventDefault()
     if (!validate()) return
     setStatus('submitting')
+
+    const isCourse = values.service === 'Course'
+    const isInfluencer = values.service === 'Influencer Management'
 
     const { error } = await supabase.from('leads').insert({
       name: values.name.trim(),
@@ -82,6 +102,10 @@ export default function LeadForm() {
       note: values.note.trim() || null,
       plan_interest: planInterest,
       service_interest: values.service || null,
+      course_type: isCourse ? selectedCourse?.name ?? null : null,
+      algo_addon: isCourse ? values.algoAddon : false,
+      course_amount: isCourse ? courseAmount : null,
+      wants_google_meet: isInfluencer ? values.wantsGoogleMeet : false,
     })
 
     if (error) {
@@ -201,6 +225,79 @@ export default function LeadForm() {
             ))}
           </select>
         </div>
+
+        {/* Course sub-fields — only shown once "Course" is selected above */}
+        {values.service === 'Course' && (
+          <div className="md:col-span-2 rounded-lg border border-mist/10 bg-ink-800/40 p-4">
+            <p className="mb-3 text-xs font-medium text-mist/50">Which course?</p>
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              {COURSES.map((course) => (
+                <label
+                  key={course.id}
+                  className={`flex cursor-pointer items-center justify-between gap-2 rounded-md border px-3 py-2.5 text-sm transition-colors ${
+                    values.courseId === course.id
+                      ? 'border-signal/50 bg-signal/5 text-mist'
+                      : 'border-mist/15 text-mist/60 hover:border-mist/30'
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="courseId"
+                      value={course.id}
+                      checked={values.courseId === course.id}
+                      onChange={(e) => update('courseId', e.target.value)}
+                      className="h-3.5 w-3.5 text-signal focus:ring-signal"
+                    />
+                    {course.name}
+                  </span>
+                  <span className="font-mono text-xs text-mist/50">
+                    ₹{course.price.toLocaleString('en-IN')}
+                  </span>
+                </label>
+              ))}
+            </div>
+            {errors.courseId && <p className="mt-1.5 text-xs text-loss">{errors.courseId}</p>}
+
+            <label className="mt-3 flex cursor-pointer items-start gap-2.5">
+              <input
+                type="checkbox"
+                checked={values.algoAddon}
+                onChange={(e) => update('algoAddon', e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-mist/30 text-signal focus:ring-signal"
+              />
+              <span className="text-xs text-mist/60">
+                Add {ALGO_ADDON.label} (${ALGO_ADDON.priceUSD} / ₹
+                {ALGO_ADDON.priceINR.toLocaleString('en-IN')})
+              </span>
+            </label>
+
+            {selectedCourse && (
+              <p className="mt-3 font-mono text-xs text-signal">
+                Total: ₹{courseAmount.toLocaleString('en-IN')}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Influencer Management sub-section — only shown once selected above */}
+        {values.service === 'Influencer Management' && (
+          <div className="md:col-span-2 rounded-lg border border-mist/10 bg-ink-800/40 p-4">
+            <label className="flex cursor-pointer items-start gap-2.5">
+              <input
+                type="checkbox"
+                checked={values.wantsGoogleMeet}
+                onChange={(e) => update('wantsGoogleMeet', e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-mist/30 text-signal focus:ring-signal"
+              />
+              <span className="flex items-start gap-2 text-xs text-mist/60">
+                <Video className="mt-0.5 h-3.5 w-3.5 shrink-0 text-signal" />
+                Schedule a Google Meet with our partnerships team — we&apos;ll
+                confirm a time and send the meeting link to your email.
+              </span>
+            </label>
+          </div>
+        )}
 
         <div className="md:col-span-2">
           <label htmlFor="note" className="mb-1.5 block text-xs font-medium text-mist/50">
