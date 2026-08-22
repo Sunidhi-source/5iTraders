@@ -12,8 +12,10 @@ import {
   Video,
   Save,
   ExternalLink,
+  Download,
 } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
+import { syncLeadToSheet } from '../lib/syncLeadToSheet'
 import CopyButton from '../components/CopyButton'
 
 const STATUS_OPTIONS = ['New', 'Contacted', 'Interested', 'Converted', 'Not Interested']
@@ -47,6 +49,7 @@ export default function AdminDashboard() {
   const [deleting, setDeleting] = useState(false)
   const [meetLinkDraft, setMeetLinkDraft] = useState('')
   const [savingMeetLink, setSavingMeetLink] = useState(false)
+  const [exporting, setExporting] = useState(false)
 
   useEffect(() => {
     fetchLeads()
@@ -84,13 +87,16 @@ export default function AdminDashboard() {
   async function handleSaveMeetLink(leadId) {
     setSavingMeetLink(true)
     const value = meetLinkDraft.trim() || null
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('leads')
       .update({ google_meet_link: value })
       .eq('id', leadId)
+      .select()
+      .single()
     setSavingMeetLink(false)
     if (!error) {
       setLeads((prev) => prev.map((l) => (l.id === leadId ? { ...l, google_meet_link: value } : l)))
+      syncLeadToSheet('upsert', data)
     }
   }
 
@@ -108,8 +114,11 @@ export default function AdminDashboard() {
   }
 
   async function handleStatusChange(leadId, newStatus) {
-    setLeads((prev) => prev.map((l) => (l.id === leadId ? { ...l, status: newStatus.toLowerCase() } : l)))
-    await supabase.from('leads').update({ status: newStatus.toLowerCase() }).eq('id', leadId)
+    const updatedStatus = newStatus.toLowerCase()
+    setLeads((prev) => prev.map((l) => (l.id === leadId ? { ...l, status: updatedStatus } : l)))
+    await supabase.from('leads').update({ status: updatedStatus }).eq('id', leadId)
+    const current = leads.find((l) => l.id === leadId)
+    if (current) syncLeadToSheet('upsert', { ...current, status: updatedStatus })
   }
 
   async function handleLogout() {
@@ -123,6 +132,7 @@ export default function AdminDashboard() {
     const { error } = await supabase.from('leads').delete().eq('id', pendingDelete.id)
     setDeleting(false)
     if (!error) {
+      syncLeadToSheet('delete', { id: pendingDelete.id })
       setLeads((prev) => prev.filter((l) => l.id !== pendingDelete.id))
       if (expandedId === pendingDelete.id) setExpandedId(null)
       setPendingDelete(null)
@@ -141,6 +151,53 @@ export default function AdminDashboard() {
     })
     return list
   }, [leads, statusFilter, sortDir])
+
+  // Exports exactly what's currently on screen (respecting the active
+  // status filter + sort order) as a downloadable .xlsx file. Client-side
+  // only — no Google account, no server round trip, nothing to configure.
+  // The 'xlsx' library is dynamically imported so it's not part of the
+  // main bundle for visitors who never open the admin dashboard.
+  async function handleExport() {
+    if (exporting || visibleLeads.length === 0) return
+    setExporting(true)
+    try {
+      const XLSX = await import('xlsx')
+
+      const rows = visibleLeads.map((lead) => ({
+        Name: lead.name ?? '',
+        Email: lead.email ?? '',
+        Phone: lead.phone ?? '',
+        City: lead.city ?? '',
+        Status: normalizeStatus(lead.status),
+        'Service interest': lead.service_interest ?? '',
+        'Plan interest': lead.plan_interest ?? '',
+        Course: lead.course_type ?? '',
+        'Algo add-on': lead.algo_addon ? 'Yes' : '',
+        'Course amount': lead.course_amount ?? '',
+        'Google Meet link': lead.google_meet_link ?? '',
+        Note: lead.note ?? '',
+        Submitted: lead.created_at ? new Date(lead.created_at).toLocaleString() : '',
+      }))
+
+      const worksheet = XLSX.utils.json_to_sheet(rows)
+      // Reasonable column widths so it's readable without manual resizing.
+      worksheet['!cols'] = [
+        { wch: 20 }, { wch: 26 }, { wch: 14 }, { wch: 14 }, { wch: 14 },
+        { wch: 18 }, { wch: 16 }, { wch: 12 }, { wch: 12 }, { wch: 14 },
+        { wch: 30 }, { wch: 30 }, { wch: 20 },
+      ]
+
+      const workbook = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Leads')
+
+      const stamp = new Date().toISOString().slice(0, 10)
+      XLSX.writeFile(workbook, `5i-traders-leads-${stamp}.xlsx`)
+    } catch (err) {
+      console.error('Export failed:', err)
+    } finally {
+      setExporting(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-ink-900">
@@ -180,6 +237,19 @@ export default function AdminDashboard() {
           >
             <ArrowUpDown className="h-3.5 w-3.5" />
             Date {sortDir === 'desc' ? 'newest' : 'oldest'}
+          </button>
+
+          <button
+            onClick={handleExport}
+            disabled={exporting || visibleLeads.length === 0}
+            className="flex items-center gap-1.5 rounded-md border border-mist/15 px-3 py-2.5 font-mono text-xs text-mist/60 transition-colors hover:border-signal/40 hover:text-signal disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {exporting ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Download className="h-3.5 w-3.5" />
+            )}
+            Export .xlsx
           </button>
 
           <span className="ml-auto font-mono text-xs text-mist/35">

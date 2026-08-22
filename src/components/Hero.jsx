@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useSectionNav } from "../lib/scrollTo";
 import HeroGridBackground from "./HeroGridBackground";
-import HeroEcosystem from "./HeroEcosystem";
+import HeroAstronaut from "./HeroAstronaut";
 
 export default function Hero() {
   const goToSection = useSectionNav();
@@ -83,14 +83,14 @@ export default function Hero() {
               ))}
             </motion.div>
 
-            <HeroEcosystem variant="compact" />
+            <HeroAstronaut variant="compact" />
         </div>
 
         {/* Desktop orbit: anchored to this container (= the text block's own
             height), not the section — so it centers against the headline
             and copy instead of drifting down when the section's bottom
             padding stretches past a shorter browser viewport. */}
-        <HeroEcosystem variant="desktop" />
+        <HeroAstronaut variant="desktop" />
       </div>
     </section>
   );

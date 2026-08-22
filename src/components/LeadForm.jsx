@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CheckCircle2, Loader2, Video } from "lucide-react";
 import PhoneInput from "./PhoneInput";
 import { supabase } from "../lib/supabaseClient";
+import { syncLeadToSheet } from "../lib/syncLeadToSheet";
 import { COURSES, ALGO_ADDON } from "../data/courses";
 
 const SERVICE_OPTIONS = [
@@ -110,19 +111,23 @@ export default function LeadForm() {
     const isCourse = values.service === "Course";
     const isInfluencer = values.service === "Influencer Management";
 
-    const { error } = await supabase.from("leads").insert({
-      name: values.name.trim(),
-      email: values.email.trim(),
-      phone: `${values.countryCode} ${values.phone.trim()}`,
-      city: values.city.trim(),
-      note: values.note.trim() || null,
-      plan_interest: planInterest,
-      service_interest: values.service || null,
-      course_type: isCourse ? (selectedCourse?.name ?? null) : null,
-      algo_addon: isCourse ? values.algoAddon : false,
-      course_amount: isCourse ? courseAmount : null,
-      wants_google_meet: isInfluencer ? values.wantsGoogleMeet : false,
-    });
+    const { data, error } = await supabase
+      .from("leads")
+      .insert({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        phone: `${values.countryCode} ${values.phone.trim()}`,
+        city: values.city.trim(),
+        note: values.note.trim() || null,
+        plan_interest: planInterest,
+        service_interest: values.service || null,
+        course_type: isCourse ? (selectedCourse?.name ?? null) : null,
+        algo_addon: isCourse ? values.algoAddon : false,
+        course_amount: isCourse ? courseAmount : null,
+        wants_google_meet: isInfluencer ? values.wantsGoogleMeet : false,
+      })
+      .select()
+      .single();
 
     if (error) {
       // eslint-disable-next-line no-console
@@ -130,6 +135,8 @@ export default function LeadForm() {
       setStatus("error");
       return;
     }
+
+    syncLeadToSheet("upsert", data);
 
     setStatus("success");
     setValues(initialState);

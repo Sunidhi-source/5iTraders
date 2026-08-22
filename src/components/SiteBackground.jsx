@@ -26,8 +26,11 @@ export default function SiteBackground() {
       </div>
       {/* Same faint dot-grid texture used elsewhere on the site (page
           heroes, footer), so this reads as one consistent background
-          rather than a new pattern. */}
-      <div className="absolute inset-0 bg-grid bg-grid opacity-[0.25]" />
+          rather than a new pattern. Given a slow, barely-there drift
+          (12s linear loop over one grid cell) so the whole page feels
+          quietly alive without pulling focus from content — same idea
+          as Glassdoor's subtle moving-grid background. */}
+      <div className="absolute inset-0 bg-grid bg-grid opacity-[0.25] animate-gridDrift" />
       {/* Fades the watermark toward the page edges so it never competes
           with the header or footer. */}
       <div className="site-bg-fade absolute inset-0" />
