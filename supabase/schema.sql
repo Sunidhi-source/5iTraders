@@ -127,19 +127,4 @@ create policy "admins delete reviews"
   to authenticated
   using (true);
 
--- =========================================================
--- Optional: seed a few reviews so the marquee has content
--- before you add your own. Safe to skip or delete.
--- =========================================================
-insert into public.reviews (name, quote, rating) values
-  ('Daniel R.', 'Set it up on a Friday, forgot about it, came back Monday to three green trades.', 5),
-  ('Priya M.', 'The backtesting data actually matched live performance within a few points.', 5),
-  ('Chidi O.', 'The algorithm does not care that I am asleep at 3am, it keeps working.', 5)
-on conflict do nothing;
 
--- =========================================================
--- Creating an admin account
--- =========================================================
--- Admin accounts are NOT created through this schema. In the Supabase
--- dashboard: Authentication -> Users -> Add user, and create the account
--- with an email + password. That account can then sign in at /admin/login.

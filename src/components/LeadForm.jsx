@@ -111,23 +111,37 @@ export default function LeadForm() {
     const isCourse = values.service === "Course";
     const isInfluencer = values.service === "Influencer Management";
 
-    const { data, error } = await supabase
-      .from("leads")
-      .insert({
-        name: values.name.trim(),
-        email: values.email.trim(),
-        phone: `${values.countryCode} ${values.phone.trim()}`,
-        city: values.city.trim(),
-        note: values.note.trim() || null,
-        plan_interest: planInterest,
-        service_interest: values.service || null,
-        course_type: isCourse ? (selectedCourse?.name ?? null) : null,
-        algo_addon: isCourse ? values.algoAddon : false,
-        course_amount: isCourse ? courseAmount : null,
-        wants_google_meet: isInfluencer ? values.wantsGoogleMeet : false,
-      })
-      .select()
-      .single();
+    const submission = {
+      name: values.name.trim(),
+      email: values.email.trim(),
+      phone: `${values.countryCode} ${values.phone.trim()}`,
+      city: values.city.trim(),
+      note: values.note.trim() || null,
+      plan_interest: planInterest,
+      service_interest: values.service || null,
+      course_type: isCourse ? (selectedCourse?.name ?? null) : null,
+      algo_addon: isCourse ? values.algoAddon : false,
+      course_amount: isCourse ? courseAmount : null,
+      wants_google_meet: isInfluencer ? values.wantsGoogleMeet : false,
+    };
+
+    // Uses the submit_lead() RPC instead of a raw insert().select() —
+    // anon only has INSERT on `leads`, not SELECT, so asking Supabase to
+    // hand the new row straight back would fail row-level security. The
+    // RPC inserts server-side and returns just the new id/created_at.
+    const { data, error } = await supabase.rpc("submit_lead", {
+      p_name: submission.name,
+      p_email: submission.email,
+      p_phone: submission.phone,
+      p_city: submission.city,
+      p_note: submission.note,
+      p_plan_interest: submission.plan_interest,
+      p_service_interest: submission.service_interest,
+      p_course_type: submission.course_type,
+      p_algo_addon: submission.algo_addon,
+      p_course_amount: submission.course_amount,
+      p_wants_google_meet: submission.wants_google_meet,
+    });
 
     if (error) {
       // eslint-disable-next-line no-console
@@ -136,7 +150,13 @@ export default function LeadForm() {
       return;
     }
 
-    syncLeadToSheet("upsert", data);
+    const inserted = data?.[0];
+    syncLeadToSheet("upsert", {
+      ...submission,
+      id: inserted?.id,
+      created_at: inserted?.created_at,
+      status: "new",
+    });
 
     setStatus("success");
     setValues(initialState);
