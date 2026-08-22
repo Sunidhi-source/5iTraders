@@ -103,10 +103,10 @@ export default function Footer() {
             <li className="flex items-center gap-2">
               <Mail className="h-3.5 w-3.5 text-mist/35" />
               <a
-                href="mailto:hello@5itraders.com"
+                href="mailto:admin@5itraders.com"
                 className="transition-colors hover:text-signal"
               >
-                hello@5itraders.com
+                admin@5itraders.com
               </a>
             </li>
             <li className="flex items-center gap-2">

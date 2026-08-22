@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useSectionNav } from "../lib/scrollTo";
 import HeroGridBackground from "./HeroGridBackground";
-import AudienceShowcase from "./AudienceShowcase";
+import HeroEcosystem from "./HeroEcosystem";
 
 export default function Hero() {
   const goToSection = useSectionNav();
@@ -10,8 +10,7 @@ export default function Hero() {
     <section className="relative overflow-hidden pt-40 pb-24 md:pt-48 md:pb-32">
       <HeroGridBackground />
       <div className="container-xl relative z-10 px-6 md:px-10 lg:px-16">
-        <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
-          <div>
+        <div className="max-w-2xl">
             <motion.span
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -83,13 +82,15 @@ export default function Hero() {
                 </div>
               ))}
             </motion.div>
-          </div>
 
-          {/* Signature: interactive "who it's for" card stack */}
-          <div className="relative">
-            <AudienceShowcase />
-          </div>
+            <HeroEcosystem variant="compact" />
         </div>
+
+        {/* Desktop orbit: anchored to this container (= the text block's own
+            height), not the section — so it centers against the headline
+            and copy instead of drifting down when the section's bottom
+            padding stretches past a shorter browser viewport. */}
+        <HeroEcosystem variant="desktop" />
       </div>
     </section>
   );
