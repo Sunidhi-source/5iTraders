@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Menu, X, Linkedin, Instagram, Sun, Moon } from "lucide-react";
 import logo from "../assets/logo/logo.webp";
 import { useTheme } from "../context/ThemeContext";
+import { prefetchRoute, schedulePrefetchWhenIdle } from "../lib/routePrefetch";
 
 function ThemeToggle({ className = "" }) {
   const { theme, toggleTheme } = useTheme();
@@ -58,6 +59,13 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Header mounts on every page (it's part of the always-eager app
+  // shell), so this fires once per visit and quietly warms every other
+  // route's chunk in the background once the browser is idle.
+  useEffect(() => {
+    schedulePrefetchWhenIdle();
+  }, []);
+
   const navLinkClass = ({ isActive }) =>
     `font-body text-sm font-medium transition-colors hover:text-signal ${
       isActive ? "text-signal" : "text-mist/70"
@@ -97,6 +105,8 @@ export default function Header() {
               to={link.to}
               end={link.to === "/"}
               className={navLinkClass}
+              onMouseEnter={() => prefetchRoute(link.to)}
+              onFocus={() => prefetchRoute(link.to)}
             >
               {link.label}
             </NavLink>
@@ -154,6 +164,8 @@ export default function Header() {
           <Link
             to="/contact"
             className="btn-primary !px-4 !py-2.5 text-sm md:!px-6 md:!py-3"
+            onMouseEnter={() => prefetchRoute("/contact")}
+            onFocus={() => prefetchRoute("/contact")}
           >
             Contact us
           </Link>
@@ -180,6 +192,7 @@ export default function Header() {
                 to={link.to}
                 end={link.to === "/"}
                 onClick={() => setOpen(false)}
+                onTouchStart={() => prefetchRoute(link.to)}
                 className={mobileNavLinkClass}
               >
                 {link.label}

@@ -6,14 +6,19 @@ import ScrollToTop from './components/ScrollToTop'
 import SiteBackground from './components/SiteBackground'
 import CommunityPopup from './components/CommunityPopup'
 import ProtectedRoute from './components/ProtectedRoute'
+// Home stays a normal, eager import — it's what almost every visitor
+// hits first, so it should be part of the initial bundle with zero extra
+// network round-trip, not fetched as a separate chunk after the fact.
+import Home from './pages/Home'
 
-// Every route below is its own JS chunk (code-split), so a visitor
-// landing on "/" only downloads Home's code, not the Admin dashboard,
-// the xlsx export library, or every other page on the site. Home is
-// still the very first thing requested, so it loads with effectively no
-// extra delay; it's the other pages that stop weighing down that first
-// visit.
-const Home = lazy(() => import('./pages/Home'))
+// Everything past the entry page is code-split, so a visitor doesn't pay
+// for the Admin dashboard, the xlsx export library, etc. on their first
+// load. To stop that split from ever being felt as a stutter when
+// someone actually clicks a nav link, Header prefetches each of these
+// chunks in the background the moment the page goes idle (see
+// Header.jsx) — so by the time a click happens, the code is usually
+// already sitting in the browser's cache and Suspense never even
+// engages.
 const AlgoTrading = lazy(() => import('./pages/AlgoTrading'))
 const CoursesTelegram = lazy(() => import('./pages/CoursesTelegram'))
 const InfluencerManagement = lazy(() => import('./pages/InfluencerManagement'))
@@ -33,11 +38,16 @@ function SiteLayout({ children }) {
   )
 }
 
-// Minimal, near-invisible fallback for the brief moment a chunk is
-// fetched on navigation — avoids a jarring blank page without adding a
-// heavy spinner component of its own.
+// Visible (if subtle) top progress bar for the rare case a chunk hasn't
+// finished prefetching yet — replaces the old invisible fallback, which
+// made a slow connection look like the site had frozen instead of just
+// loading.
 function RouteFallback() {
-  return <div className="min-h-[40vh]" aria-hidden="true" />
+  return (
+    <div className="fixed inset-x-0 top-0 z-50 h-0.5 overflow-hidden bg-transparent" aria-hidden="true">
+      <div className="h-full w-1/3 animate-route-loading bg-signal" />
+    </div>
+  )
 }
 
 export default function App() {

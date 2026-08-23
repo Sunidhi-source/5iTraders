@@ -120,6 +120,11 @@ export default {
           '0%, 80%, 100%': { transform: 'translateY(0)', opacity: 0.4 },
           '40%': { transform: 'translateY(-5px)', opacity: 1 },
         },
+        routeLoading: {
+          '0%': { transform: 'translateX(-100%)' },
+          '60%': { transform: 'translateX(60%)' },
+          '100%': { transform: 'translateX(220%)' },
+        },
       },
       animation: {
         marquee: 'marquee 38s linear infinite',
@@ -138,6 +143,7 @@ export default {
         'antenna-blip': 'antennaBlip 1.8s ease-in-out infinite',
         rise: 'riseFade linear infinite',
         'dot-bounce': 'dotBounce 1.4s ease-in-out infinite',
+        'route-loading': 'routeLoading 0.7s ease-in-out infinite',
       },
     },
   },
