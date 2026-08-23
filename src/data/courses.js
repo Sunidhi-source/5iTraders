@@ -6,6 +6,24 @@ export const ALGO_ADDON = {
   priceUSD: 69,
 }
 
+// Free Telegram channel — sits alongside the two paid courses. Everything
+// on it is included at ₹0, so it skips the algo add-on / price toggle
+// that the paid course cards use.
+export const TELEGRAM_CHANNEL = {
+  id: 'telegram',
+  name: 'Telegram Channel',
+  tagline: 'Everything, on the house',
+  price: 0,
+  link: 'https://t.me/the5i_support',
+  perks: [
+    'Daily live market analysis',
+    'Intraday & positional chart analysis',
+    'Trade calls & setups shared in real time',
+    'Algo performance & result updates',
+    'Course previews and webinar alerts',
+  ],
+}
+
 export const COURSES = [
   {
     id: 'recorded',

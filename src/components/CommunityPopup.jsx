@@ -1,34 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Loader2, Mail, X } from "lucide-react";
-import logo from "../assets/logo/logo.png";
+import logo from "../assets/logo/logo.webp";
 
-// Storage key + how long to wait before showing it again after a dismissal
-// or a successful signup, so returning visitors aren't nagged on every
-// visit. "Closed" (X / backdrop) waits SNOOZE_DAYS before asking again;
-// a successful submit sets it far in the future (effectively "never").
-const STORAGE_KEY = "5i:community-popup";
-const SNOOZE_DAYS = 14;
+// Only a successful signup is remembered permanently (so a subscribed
+// visitor is never nagged again, on this browser). A close (X / backdrop)
+// is intentionally NOT persisted — the popup is meant to re-appear a few
+// times per visit and again on every refresh, per the site's design.
+const STORAGE_KEY = "5i:community-popup-subscribed";
 const SHOW_AFTER_MS = 1200; // small delay so it doesn't slam the page load
+const REOPEN_AFTER_MS = 25000; // wait between re-appearances if dismissed
+const MAX_APPEARANCES = 3; // cap so it doesn't nag forever in one visit
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function shouldShow() {
+function hasSubscribed() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return true;
-    const until = Number(raw);
-    return Number.isFinite(until) ? Date.now() > until : true;
+    return localStorage.getItem(STORAGE_KEY) === "1";
   } catch {
     // localStorage unavailable (privacy mode etc.) — just don't show it
     // rather than risk throwing on every render.
-    return false;
+    return true;
   }
 }
 
-function snooze(days) {
+function markSubscribed() {
   try {
-    localStorage.setItem(STORAGE_KEY, String(Date.now() + days * 24 * 60 * 60 * 1000));
+    localStorage.setItem(STORAGE_KEY, "1");
   } catch {
     /* ignore */
   }
@@ -39,16 +37,32 @@ export default function CommunityPopup() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | submitting | success | error
   const [error, setError] = useState("");
+  const appearancesRef = useRef(0);
+  const reopenTimerRef = useRef(null);
 
   useEffect(() => {
-    if (!shouldShow()) return;
-    const t = setTimeout(() => setOpen(true), SHOW_AFTER_MS);
-    return () => clearTimeout(t);
+    if (hasSubscribed()) return;
+    const t = setTimeout(() => {
+      appearancesRef.current += 1;
+      setOpen(true);
+    }, SHOW_AFTER_MS);
+    return () => {
+      clearTimeout(t);
+      clearTimeout(reopenTimerRef.current);
+    };
   }, []);
 
   function close() {
     setOpen(false);
-    if (status !== "success") snooze(SNOOZE_DAYS);
+    if (status === "success" || hasSubscribed()) return;
+    // Bring it back a couple more times within the same visit, up to
+    // MAX_APPEARANCES total, then stop for the rest of this page load.
+    if (appearancesRef.current < MAX_APPEARANCES) {
+      reopenTimerRef.current = setTimeout(() => {
+        appearancesRef.current += 1;
+        setOpen(true);
+      }, REOPEN_AFTER_MS);
+    }
   }
 
   async function handleSubmit(e) {
@@ -68,7 +82,8 @@ export default function CommunityPopup() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error || "Something went wrong.");
       setStatus("success");
-      snooze(365); // don't ask again for a subscribed visitor
+      clearTimeout(reopenTimerRef.current); // don't re-open a subscribed visitor
+      markSubscribed(); // never ask again on this browser
       setTimeout(() => setOpen(false), 2200);
     } catch (err) {
       setStatus("error");

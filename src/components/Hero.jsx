@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useSectionNav } from "../lib/scrollTo";
 import HeroGridBackground from "./HeroGridBackground";
 import HeroAstronaut from "./HeroAstronaut";
+import HeroEcosystem from "./HeroEcosystem";
 
 export default function Hero() {
   const goToSection = useSectionNav();
@@ -83,13 +84,21 @@ export default function Hero() {
               ))}
             </motion.div>
 
-            <HeroAstronaut variant="compact" />
+            {/* Astronaut + orbiting services share one box: rendered first
+                so it sits underneath, then the astronaut on top of it. */}
+            <div className="relative">
+              <HeroEcosystem variant="orbit-compact" />
+              <HeroAstronaut variant="compact" />
+            </div>
         </div>
 
-        {/* Desktop orbit: anchored to this container (= the text block's own
-            height), not the section — so it centers against the headline
-            and copy instead of drifting down when the section's bottom
-            padding stretches past a shorter browser viewport. */}
+        {/* Desktop: astronaut + orbiting service nodes anchored to this
+            container (= the text block's own height), not the section —
+            so it centers against the headline and copy instead of
+            drifting down when the section's bottom padding stretches
+            past a shorter browser viewport. Ecosystem renders first so
+            the astronaut layers on top of it. */}
+        <HeroEcosystem variant="orbit" />
         <HeroAstronaut variant="desktop" />
       </div>
     </section>

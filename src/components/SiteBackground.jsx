@@ -1,4 +1,4 @@
-import logo from "../assets/logo/logo.png";
+import logo from "../assets/logo/logo.webp";
 
 // A calm, site-wide echo of the Hero's animated grid — same rotated-tile
 // language and logo mark, but toned way down and held still. It's meant

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X, Linkedin, Instagram, Sun, Moon } from "lucide-react";
-import logo from "../assets/logo/logo.png";
+import logo from "../assets/logo/logo.webp";
 import { useTheme } from "../context/ThemeContext";
 
 function ThemeToggle({ className = "" }) {

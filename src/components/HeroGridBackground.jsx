@@ -1,4 +1,4 @@
-import logo from "../assets/logo/logo.png";
+import logo from "../assets/logo/logo.webp";
 
 // 32 tiles (up from 24) so the logo mark repeats across several rows
 // instead of just the top line. Every other tile carries the logo now —

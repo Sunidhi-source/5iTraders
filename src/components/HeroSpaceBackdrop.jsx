@@ -1,4 +1,4 @@
-import logo from "../assets/logo/logo.png";
+import logo from "../assets/logo/logo.webp";
 
 // Replaces the old tile-grid backdrop with a space/globe scene inspired by
 // the brand's new hero art direction — a glowing globe carrying the 5i

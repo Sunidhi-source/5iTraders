@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Linkedin, Instagram, Mail } from "lucide-react";
-import logo from "../assets/logo/logo.png";
+import logo from "../assets/logo/logo.webp";
 
 const LINKS = [
   { label: "Algo Trading", to: "/algo" },

@@ -1,29 +1,54 @@
 import { motion } from "framer-motion";
-import { Check, Megaphone } from "lucide-react";
+import { Check, Megaphone, X } from "lucide-react";
 import { useGoToContact } from "../lib/scrollTo";
 
+// Each plan is shown as a fixed feature checklist so the three tiers line
+// up for easy comparison. "Customised" sits in the middle of the grid on
+// purpose — it's the flexible, talk-to-us option — flanked by the two
+// fixed-scope presets.
 const PLANS = [
+  {
+    name: "Preset 1",
+    tagline: "Get started with a focused package",
+    price: "$999",
+    priceNote: "per campaign",
+    popular: false,
+    features: [
+      { label: "Instagram reels", value: "6–10 reels", included: true },
+      { label: "Instagram stories", value: "Included", included: true },
+      { label: "Telegram promotions", value: "Not included", included: false },
+      { label: "YouTube dedicated videos", value: "Not included", included: false },
+      { label: "Performance reports", value: "Monthly", included: true },
+    ],
+  },
   {
     name: "Customised",
     tagline: "Built around your audience",
-    perks: [
-      "Fully tailored offer structure",
-      "Custom creative & messaging support",
-      "Flexible commercial terms",
-      "Priority partner support",
-    ],
+    price: "Discussed in meeting",
+    priceNote: null,
     popular: true,
+    features: [
+      { label: "Instagram reels", value: "Unlimited", included: true },
+      { label: "Instagram stories", value: "Unlimited", included: true },
+      { label: "Telegram promotions", value: "Unlimited", included: true },
+      { label: "YouTube dedicated videos", value: "Included", included: true },
+      { label: "Performance reports", value: "Weekly & monthly", included: true },
+    ],
   },
   {
-    name: "Preset",
+    name: "Preset 2",
     tagline: "Full-scale partnership",
-    perks: [
-      "White-label infrastructure",
-      "Dedicated account manager",
-      "Highest revenue share tier",
-      "Joint marketing campaigns",
-    ],
+    price: "$1,499",
+    priceNote: "per campaign",
     popular: false,
+    ctaLabel: "Get More Info",
+    features: [
+      { label: "Instagram reels", value: "Unlimited", included: true },
+      { label: "Instagram stories", value: "Unlimited", included: true },
+      { label: "Telegram promotions", value: "Unlimited", included: true },
+      { label: "YouTube dedicated videos", value: "Included", included: true },
+      { label: "Performance reports", value: "Monthly & weekly", included: true },
+    ],
   },
 ];
 
@@ -59,7 +84,7 @@ export default function InfluencerManagement() {
           </p>
         </motion.div>
 
-        <div className="mx-auto mt-16 grid max-w-3xl gap-5 sm:grid-cols-2">
+        <div className="mx-auto mt-16 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {PLANS.map((plan, i) => (
             <motion.div
               key={plan.name}
@@ -69,7 +94,7 @@ export default function InfluencerManagement() {
               transition={{ duration: 0.45, delay: i * 0.08 }}
               className={`relative flex flex-col rounded-xl border p-7 ${
                 plan.popular
-                  ? "border-signal/50 bg-ink-900 shadow-[0_0_0_1px_rgba(36,144,243,0.15),0_20px_60px_-20px_rgba(36,144,243,0.35)]"
+                  ? "border-signal/50 bg-ink-900 shadow-[0_0_0_1px_rgba(36,144,243,0.15),0_20px_60px_-20px_rgba(36,144,243,0.35)] lg:scale-[1.03]"
                   : "border-mist/10 bg-ink-900"
               }`}
             >
@@ -84,14 +109,42 @@ export default function InfluencerManagement() {
               </h3>
               <p className="mt-1 text-sm text-mist/50">{plan.tagline}</p>
 
+              <div className="mt-4 flex items-baseline gap-1.5">
+                <span
+                  className={
+                    plan.priceNote
+                      ? "font-mono text-3xl font-semibold text-mist"
+                      : "font-mono text-xl font-semibold text-mist"
+                  }
+                >
+                  {plan.price}
+                </span>
+                {plan.priceNote && (
+                  <span className="text-xs text-mist/40">{plan.priceNote}</span>
+                )}
+              </div>
+
               <ul className="mt-6 flex flex-1 flex-col gap-2.5">
-                {plan.perks.map((perk) => (
+                {plan.features.map((feature) => (
                   <li
-                    key={perk}
-                    className="flex items-start gap-2 text-sm text-mist/60"
+                    key={feature.label}
+                    className="flex items-start justify-between gap-3 text-sm"
                   >
-                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-leaf" />
-                    {perk}
+                    <span className="flex items-start gap-2 text-mist/70">
+                      {feature.included ? (
+                        <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-leaf" />
+                      ) : (
+                        <X className="mt-0.5 h-3.5 w-3.5 shrink-0 text-mist/30" />
+                      )}
+                      {feature.label}
+                    </span>
+                    <span
+                      className={`shrink-0 text-right text-xs ${
+                        feature.included ? "text-mist/50" : "text-mist/30"
+                      }`}
+                    >
+                      {feature.value}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -104,7 +157,7 @@ export default function InfluencerManagement() {
                     : "btn-secondary mt-7 w-full"
                 }
               >
-                Talk to us about {plan.name}
+                {plan.ctaLabel ?? `Talk to us about ${plan.name}`}
               </button>
             </motion.div>
           ))}

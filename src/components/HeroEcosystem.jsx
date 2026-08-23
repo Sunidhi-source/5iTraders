@@ -1,75 +1,82 @@
 import { motion } from "framer-motion";
 import { LineChart, Send, Megaphone, Handshake } from "lucide-react";
-import logo from "../assets/logo/logo.png";
 
-// A hub-and-spoke composition. Center = the 5i mark. Four glass nodes orbit
-// it, each tied back with a thin animated line. Positions are laid out as
-// percentages, rotated off the plain N/E/S/W axis so it reads as an organic
-// ecosystem rather than a grid/dashboard. Both variants below share these
-// same percentages, so the compact (mobile) version is a faithful shrink of
-// the desktop one rather than a different layout.
+// Four glass nodes that orbit AROUND the astronaut (HeroAstronaut) rather
+// than around a hub of their own — the astronaut is the center of the
+// ecosystem. This component is laid out on the exact same box (same
+// absolute position + size) as HeroAstronaut so the two share one
+// coordinate space: node positions are percentages of that shared box,
+// and the connecting lines' shared viewBox center (260,260 of 0–520)
+// lines up with the astronaut's own center point. Rendered as a sibling
+// *before* HeroAstronaut in the DOM so the astronaut sits visually on
+// top, hiding the inner half of each line behind it.
 const NODES = [
   {
     label: "Algo Trading",
     compactLabel: "Algo Trading",
     icon: LineChart,
-    left: "37.5%",
-    top: "15.5%",
+    left: "33.75%",
+    top: "5.15%",
     floatDelay: "0s",
   },
   {
     label: "Courses / Telegram",
     compactLabel: "Telegram",
     icon: Send,
-    left: "84%",
-    top: "37.5%",
+    left: "94.85%",
+    top: "33.75%",
     floatDelay: "0.9s",
   },
   {
     label: "Influencer Mgmt",
     compactLabel: "Influencer",
     icon: Megaphone,
-    left: "62.5%",
-    top: "84%",
+    left: "66.25%",
+    top: "94.85%",
     floatDelay: "1.8s",
   },
   {
     label: "Businesses / Partners",
     compactLabel: "Partners",
     icon: Handshake,
-    left: "15.5%",
-    top: "62.5%",
+    left: "5.15%",
+    top: "66.25%",
     floatDelay: "2.6s",
   },
 ];
 
 // Same layout, in raw 0–520 units, for the SVG line layer (viewBox scales
 // to whatever pixel size the wrapper renders at, so one set of points
-// serves both variants).
+// serves both variants). Lines run from the shared center (= the
+// astronaut's center) out to each node.
 const LINE_POINTS = [
-  [195, 81],
-  [438, 195],
-  [325, 438],
-  [81, 325],
+  [175.5, 27.3],
+  [491.4, 175.5],
+  [344.5, 491.4],
+  [27.3, 344.5],
 ];
 const CENTER = [260, 260];
 
-export default function HeroEcosystem({ variant = "desktop" }) {
-  const compact = variant === "compact";
+export default function HeroEcosystem({ variant = "orbit" }) {
+  const compact = variant === "orbit-compact";
+
+  // Matches HeroAstronaut's own wrapper classes exactly (compact: relative
+  // + fixed size, fills its shared parent; desktop: absolute, pinned to
+  // the same spot) so the two graphics occupy one shared box.
+  const wrapperClass = compact
+    ? "pointer-events-none absolute inset-0 h-full w-full lg:hidden"
+    : "pointer-events-none absolute right-[0%] top-4 hidden h-[420px] w-[420px] lg:block xl:right-[2%] xl:top-2 xl:h-[480px] xl:w-[480px] 2xl:h-[500px] 2xl:w-[500px]";
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.9, delay: compact ? 0.5 : 0.2 }}
-      className={
-        compact
-          ? "pointer-events-none relative mx-auto mt-16 h-[260px] w-[260px] sm:h-[300px] sm:w-[300px] lg:hidden"
-          : "pointer-events-none absolute right-[6%] top-[36%] hidden h-[280px] w-[280px] -translate-y-1/2 lg:block xl:right-[8%] xl:h-[330px] xl:w-[330px]"
-      }
+      transition={{ duration: 0.9, delay: compact ? 0.4 : 0.3 }}
+      className={wrapperClass}
       aria-hidden="true"
     >
-      {/* Connecting lines + traveling data dots */}
+      {/* Connecting lines + traveling data dots, radiating from the
+          astronaut's own center out to each floating node. */}
       <svg viewBox="0 0 520 520" className="absolute inset-0 h-full w-full">
         {LINE_POINTS.map(([x, y], i) => (
           <line
@@ -100,22 +107,7 @@ export default function HeroEcosystem({ variant = "desktop" }) {
         ))}
       </svg>
 
-      {/* Central hub */}
-      <div
-        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
-        style={compact ? { width: 64, height: 64 } : { width: 108, height: 108 }}
-      >
-        <div className="absolute inset-0 rounded-full bg-signal/25 blur-2xl animate-glowPulse" />
-        <div className="relative flex h-full w-full items-center justify-center rounded-full border border-signal/30 bg-ink-800/80 shadow-[0_0_0_1px_rgba(36,144,243,0.08)] backdrop-blur">
-          <img
-            src={logo}
-            alt=""
-            className={compact ? "h-6 w-auto opacity-90" : "h-11 w-auto opacity-90"}
-          />
-        </div>
-      </div>
-
-      {/* Orbiting glass nodes */}
+      {/* Orbiting glass nodes — the services revolving around the astronaut */}
       {NODES.map(({ label, compactLabel, icon: Icon, left, top, floatDelay }) => (
         <div
           key={label}
