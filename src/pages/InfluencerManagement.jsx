@@ -2,10 +2,6 @@ import { motion } from "framer-motion";
 import { Check, Megaphone, X } from "lucide-react";
 import { useGoToContact } from "../lib/scrollTo";
 
-// Each plan is shown as a fixed feature checklist so the three tiers line
-// up for easy comparison. "Customised" sits in the middle of the grid on
-// purpose — it's the flexible, talk-to-us option — flanked by the two
-// fixed-scope presets.
 const PLANS = [
   {
     name: "Preset 1",
@@ -17,7 +13,11 @@ const PLANS = [
       { label: "Instagram reels", value: "6–10 reels", included: true },
       { label: "Instagram stories", value: "Included", included: true },
       { label: "Telegram promotions", value: "Not included", included: false },
-      { label: "YouTube dedicated videos", value: "Not included", included: false },
+      {
+        label: "YouTube dedicated videos",
+        value: "Not included",
+        included: false,
+      },
       { label: "Performance reports", value: "Monthly", included: true },
     ],
   },
@@ -32,7 +32,11 @@ const PLANS = [
       { label: "Instagram stories", value: "Unlimited", included: true },
       { label: "Telegram promotions", value: "Unlimited", included: true },
       { label: "YouTube dedicated videos", value: "Included", included: true },
-      { label: "Performance reports", value: "Weekly & monthly", included: true },
+      {
+        label: "Performance reports",
+        value: "Weekly & monthly",
+        included: true,
+      },
     ],
   },
   {
@@ -41,13 +45,17 @@ const PLANS = [
     price: "$1,499",
     priceNote: "per campaign",
     popular: false,
-    ctaLabel: "Get More Info",
+    ctaLabel: "Talk to us about Preset 2",
     features: [
-      { label: "Instagram reels", value: "Unlimited", included: true },
-      { label: "Instagram stories", value: "Unlimited", included: true },
-      { label: "Telegram promotions", value: "Unlimited", included: true },
+      { label: "Instagram reels", value: "15-20 reels", included: true },
+      { label: "Instagram stories", value: "Included", included: true },
+      { label: "Telegram promotions", value: "Included", included: true },
       { label: "YouTube dedicated videos", value: "Included", included: true },
-      { label: "Performance reports", value: "Monthly & weekly", included: true },
+      {
+        label: "Performance reports",
+        value: "Monthly & weekly",
+        included: true,
+      },
     ],
   },
 ];
