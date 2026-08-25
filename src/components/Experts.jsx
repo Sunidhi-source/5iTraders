@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion'
 import PlaceholderSlot from './PlaceholderSlot'
+import ceoPhoto from '../assets/team/ceo-mayank-goswami.webp'
+import ctoPhoto from '../assets/team/cto-anirudh-sharma.webp'
+import csoPhoto from '../assets/team/cso-kartik-sharma.webp'
+import cooPhoto from '../assets/team/coo-abhishek-yadav.webp'
 
 const EXPERTS = [
-  { name: 'Add Name', role: 'Founder & Head of Strategy', bio: 'One-line bio goes here.' },
-  { name: 'Add Name', role: 'Lead Quant Developer', bio: 'One-line bio goes here.' },
-  { name: 'Add Name', role: 'Risk & Compliance Lead', bio: 'One-line bio goes here.' },
-  { name: 'Add Name', role: 'Client Success Lead', bio: 'One-line bio goes here.' },
+  { name: 'Mayank Goswami', role: 'CEO', bio: 'Sets the vision and strategy behind 5i Traders.', photo: ceoPhoto },
+  { name: 'Anirudh Sharma', role: 'CTO', bio: 'Builds and maintains the algorithms and platform.', photo: ctoPhoto },
+  { name: 'Kartik Sharma', role: 'CSO', bio: 'Drives strategy and market positioning.', photo: csoPhoto },
+  { name: 'Abhishek Yadav', role: 'COO', bio: 'Runs day-to-day operations and client delivery.', photo: cooPhoto },
 ]
 
 export default function Experts() {
@@ -37,10 +41,12 @@ export default function Experts() {
               className="card flex flex-col items-center p-6 text-center"
             >
               <PlaceholderSlot
-                label={`Team photo ${i + 1} — /src/assets/team/expert-${i + 1}.jpg`}
+                src={expert.photo}
+                label={`${expert.name} — ${expert.role}`}
                 aspect="aspect-square"
                 rounded="rounded-full"
                 className="w-28"
+                glow
               />
               <h3 className="mt-5 font-display text-sm font-semibold text-mist">{expert.name}</h3>
               <p className="mt-1 font-mono text-xs text-signal/80">{expert.role}</p>

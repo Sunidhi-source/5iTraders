@@ -24,6 +24,44 @@ import { google } from "googleapis";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Google's own guidance for handling 429 (rate limit) and 5xx responses:
+// don't fail immediately, retry a few times with a growing delay. The
+// Sheets API's per-service-account write limit is 60/minute — a fixed
+// service account (like this one) can hit that during a burst of popup
+// signups even though the site overall has plenty of headroom. Most
+// individual retries here resolve within a second or two, invisibly to
+// the visitor; only a request that's still failing after all attempts
+// falls through to the error response below.
+const MAX_ATTEMPTS = 4;
+const BASE_DELAY_MS = 500; // 500ms, 1s, 2s between attempts
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRetryable(err) {
+  const status = err?.code || err?.response?.status;
+  // 429 = rate limited, 500/503 = transient Google-side error. Anything
+  // else (bad auth, permission denied, malformed request) won't be fixed
+  // by retrying, so fail fast on those instead of stalling the request.
+  return status === 429 || status === 500 || status === 503;
+}
+
+async function appendWithRetry(sheets, params) {
+  let lastErr;
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    try {
+      return await sheets.spreadsheets.values.append(params);
+    } catch (err) {
+      lastErr = err;
+      if (!isRetryable(err) || attempt === MAX_ATTEMPTS - 1) throw err;
+      const delay = BASE_DELAY_MS * 2 ** attempt;
+      await sleep(delay);
+    }
+  }
+  throw lastErr;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -60,7 +98,7 @@ export default async function handler(req, res) {
     const sheets = google.sheets({ version: "v4", auth });
     const tab = GOOGLE_SHEET_TAB || "Subscribers";
 
-    await sheets.spreadsheets.values.append({
+    await appendWithRetry(sheets, {
       spreadsheetId: GOOGLE_SHEET_ID,
       range: `${tab}!A:C`,
       valueInputOption: "USER_ENTERED",
@@ -73,6 +111,11 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error("Google Sheets append failed:", err?.message || err);
-    return res.status(502).json({ error: "Could not save your email right now. Please try again." });
+    const status = err?.code || err?.response?.status;
+    const message =
+      status === 429
+        ? "We're saving a lot of signups right now — please try again in a few seconds."
+        : "Could not save your email right now. Please try again.";
+    return res.status(502).json({ error: message });
   }
 }
