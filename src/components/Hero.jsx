@@ -56,7 +56,7 @@ export default function Hero() {
             </button>
             {/* TODO: swap href for the client's YouTube walkthrough link */}
             <a
-              href="https://www.youtube.com/"
+              href="https://youtu.be/r38mXcw4-t0?si=REInidjT5bvtmWCk"
               target="_blank"
               rel="noreferrer"
               className="btn-secondary"

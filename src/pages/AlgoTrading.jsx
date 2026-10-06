@@ -14,8 +14,9 @@ import CopyButton from "../components/CopyButton";
 import AlgoBot from "../components/AlgoBot";
 
 // TODO: client to swap in the real YouTube walkthrough links.
-const LOGIN_HELP_VIDEO_URL = "https://www.youtube.com/";
-const ACCOUNT_HELP_VIDEO_URL = "https://www.youtube.com/";
+const LOGIN_HELP_VIDEO_URL = "https://youtu.be/pOxnU5IJF4M?si=CMKnwIra2-Ue5bjH";
+const ACCOUNT_HELP_VIDEO_URL =
+  "https://youtube.com/playlist?list=PLMAZ8wC-3okY&si=epFnRUysxyRvnNpD";
 
 const BOXES = [
   {
