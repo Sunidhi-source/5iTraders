@@ -5,6 +5,7 @@ import { CheckCircle2, Loader2, Video } from "lucide-react";
 import PhoneInput from "./PhoneInput";
 import { supabase } from "../lib/supabaseClient";
 import { syncLeadToSheet } from "../lib/syncLeadToSheet";
+import { trackEvent } from "../lib/metaPixel";
 import { COURSES, ALGO_ADDON } from "../data/courses";
 
 const SERVICE_OPTIONS = [
@@ -157,6 +158,9 @@ export default function LeadForm() {
       created_at: inserted?.created_at,
       status: "new",
     });
+
+    // Tell Meta a lead was captured (no personal data is sent).
+    trackEvent("Lead", { content_name: submission.service_interest || "General enquiry" });
 
     setStatus("success");
     setValues(initialState);

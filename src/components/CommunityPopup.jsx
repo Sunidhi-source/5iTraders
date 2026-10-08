@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Loader2, Mail, X } from "lucide-react";
 import logo from "../assets/logo/logo.webp";
+import { trackCustomEvent } from "../lib/metaPixel";
 
 // Only a successful signup is remembered permanently (so a subscribed
 // visitor is never nagged again, on this browser). A close (X / backdrop)
@@ -81,6 +82,7 @@ export default function CommunityPopup() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error || "Something went wrong.");
+      trackCustomEvent("CommunitySignup");
       setStatus("success");
       clearTimeout(reopenTimerRef.current); // don't re-open a subscribed visitor
       markSubscribed(); // never ask again on this browser

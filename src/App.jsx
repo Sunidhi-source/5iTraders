@@ -6,6 +6,7 @@ import ScrollToTop from './components/ScrollToTop'
 import SiteBackground from './components/SiteBackground'
 import CommunityPopup from './components/CommunityPopup'
 import ProtectedRoute from './components/ProtectedRoute'
+import MetaPixelTracker from './components/MetaPixelTracker'
 // Home stays a normal, eager import — it's what almost every visitor
 // hits first, so it should be part of the initial bundle with zero extra
 // network round-trip, not fetched as a separate chunk after the fact.
@@ -54,6 +55,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <MetaPixelTracker />
       {/* Rendered once at the app root (not inside SiteLayout) so it
           mounts a single time per session instead of re-triggering on
           every client-side route change. */}
